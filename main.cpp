@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include "src/Constants.h"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Works!");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Project Swallow");
 
     while (window.isOpen()) {
         sf::Event event;

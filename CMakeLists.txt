@@ -27,7 +27,7 @@ cmake_minimum_required(VERSION 3.13) # declare the minimum required CMake versio
       add_subdirectory(doc)
    endif()
 
-   add_executable(project_swallow src/main.cpp)
+   add_executable(project_swallow main.cpp)
 
    target_include_directories(project_swallow PRIVATE include)
 
