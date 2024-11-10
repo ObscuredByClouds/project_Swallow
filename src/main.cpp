@@ -11,7 +11,7 @@ int main() {
         }
 
         window.clear();
-        // Здесь вы можете рисовать свои объекты
+        // Draw your objects
         window.display();
     }
 
