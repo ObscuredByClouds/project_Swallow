@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include "include/constants.hpp"
 #include "include/objects.hpp"
 #include "include/textures.hpp"
