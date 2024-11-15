@@ -31,7 +31,7 @@ public:
     }
 };
 
-class PlayerController : public Controller {
+class TankInputController : public Controller {
 
 public:
 

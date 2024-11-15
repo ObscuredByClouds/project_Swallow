@@ -8,7 +8,7 @@ class Object {
 
 public:
 
-    virtual ~Object();
+    virtual ~Object() = default;
 
     virtual void update(float time) = 0;
 
@@ -49,7 +49,6 @@ class ControlledObject : public Object {
         /* float get_angle() const {
             return angle;
         }; */
-
 
         ControlledObject(std::unique_ptr<Controller> controller)
             : _controller(std::move(controller)) {}
