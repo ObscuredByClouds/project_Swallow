@@ -53,7 +53,7 @@ class ControlledObject : public Object {
 
         ControlledObject(
             std::unique_ptr<Controller> controller,
-            sf::Vector2f &position
+            const sf::Vector2f &position
         ) : _controller(std::move(controller)), _position(position) {}
 
         void update(float time) override {

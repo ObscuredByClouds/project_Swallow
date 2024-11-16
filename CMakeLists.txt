@@ -30,14 +30,6 @@ cmake_minimum_required(VERSION 3.13) # declare the minimum required CMake versio
    add_executable(
       project_swallow
       main.cpp
-      src/objects.cpp
-      src/player_controller.cpp
-      src/player.cpp
-      include/constants.hpp
-      include/objects.hpp
-      include/player_controller.hpp
-      include/player.hpp
-      include/textures.hpp
    )
 
    target_include_directories(project_swallow PRIVATE include)

@@ -10,10 +10,10 @@ int main() {
 
     textures::set_textures();
 
-    RombTank romb_tank = RombTank(
-        controller,
+    RombTank romb_tank(
+        std::make_unique<TankInputController>(),
         sf::Vector2f(0, 0)
-    )
+    );
 
     sf::Clock clock;
     while (window.isOpen()) {
@@ -27,11 +27,11 @@ int main() {
                 window.close();
         }
 
-        player->update(time);
+        romb_tank.update(time);
 
         window.clear(sf::Color::White);
 
-        window.draw(player->get_sprite());
+        window.draw(romb_tank.get_sprite());
 
         window.display();
     }

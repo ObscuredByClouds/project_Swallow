@@ -8,26 +8,26 @@ class Controller {
 
 public:
     virtual ~Controller() = default;
-    virtual void update(ControlledObject& object, float time) = 0;
+    virtual void update(Controller& object, float time) = 0;
 };
 
 class ZeroController : public Controller {
 public:
-    void update(ControlledObject& object, float time) override {
+    void update(ZeroController& object, float time) {
         // Do nothing
     }
 };
 
 class RandomController : public Controller {
 public:
-    void update(ControlledObject& object, float time) override {
+    void update(RandomController& object, float time) {
         // Random behavior
     }
 };
 
 class AIController : public Controller {
 public:
-    void update(ControlledObject& object, float time) override {
+    void update(AIController& object, float time) {
         // AI Logic
     }
 };
