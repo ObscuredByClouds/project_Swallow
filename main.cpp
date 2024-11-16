@@ -3,14 +3,17 @@
 #include "include/constants.hpp"
 #include "include/objects.hpp"
 #include "include/textures.hpp"
-#include "include/player_controller.hpp"
 
 int main() {
+
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Project Swallow");
 
     textures::set_textures();
 
-    Player* player = new Player(textures::player_texture, sf::Vector2f(0, 0), 100);
+    RombTank romb_tank = RombTank(
+        controller,
+        sf::Vector2f(0, 0)
+    )
 
     sf::Clock clock;
     while (window.isOpen()) {

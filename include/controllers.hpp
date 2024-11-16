@@ -2,6 +2,7 @@
 
 #include "objects.hpp"
 #include "constants.hpp"
+#include "game_objects.hpp"
 
 class Controller {
 
@@ -35,7 +36,7 @@ class TankInputController : public Controller {
 
 public:
 
-    void update(ControlledObject& object, float time) override {
+    void update(RombTank& object, float time) {
         sf::Vector2f position_updated = object.get_position();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {

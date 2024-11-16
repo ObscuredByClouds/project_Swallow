@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace textures {
-    sf::Texture player_texture;
+    sf::Texture romb_tank_texture;
 
     static void set_textures() {
-        player_texture.loadFromFile("./textures/example_texture.png");
+        romb_tank_texture.loadFromFile("./textures/romb_tank.png");
     }
 }

@@ -15,23 +15,24 @@ public:
 };
 
 class ControlledObject : public Object {
-    private:
-        std::unique_ptr<Controller> _controller;
 
     protected:
-        sf::Vector2f position;
+
+        std::unique_ptr<Controller> _controller;
+        sf::Vector2f _position;
         //float angle;
-        sf::Sprite sprite;
-        
+        sf::Sprite _sprite;
+
     public:
+
         void set_sprite(sf::Texture& texture)
         {
-            sprite.setTexture(texture);
+            _sprite.setTexture(texture);
         };
 
-        void set_position(sf::Vector2f &new_position)
+        void set_position(sf::Vector2f &position)
         {
-            position = new_position;
+            _position = position;
         };
 
         /* void set_angle(float new_angle) {
@@ -39,19 +40,21 @@ class ControlledObject : public Object {
         }; */
 
         sf::Sprite get_sprite() const {
-            return sprite;
+            return _sprite;
         };
 
         sf::Vector2f get_position() const {
-            return position;
+            return _position;
         };
 
         /* float get_angle() const {
             return angle;
         }; */
 
-        ControlledObject(std::unique_ptr<Controller> controller)
-            : _controller(std::move(controller)) {}
+        ControlledObject(
+            std::unique_ptr<Controller> controller,
+            sf::Vector2f &position
+        ) : _controller(std::move(controller)), _position(position) {}
 
         void update(float time) override {
             if (_controller) {

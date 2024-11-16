@@ -3,8 +3,9 @@
 #include "objects.hpp"
 #include "constants.hpp"
 #include "controllers.hpp"
+#include "textures.hpp"
 
-class RombTank : public ControlledObject {
+class RombTank : ControlledObject {
 
 protected:
 
@@ -14,12 +15,18 @@ protected:
 
 public:
 
-    RombTank(std::unique_ptr<Controller> controller)
-        : _controller(std::move(controller)) {}
-    
-    RombTank(std::unique_ptr<Controller> controller)
-    {
-        _controller = std::move(controller);
+    RombTank(
+        std::unique_ptr<Controller> controller,
+        sf::Vector2f &position
+    ) : ControlledObject(std::move(controller), position) {
+        speed = ROMB_TANK_SPEED;
+        max_health = ROMB_TANK_MAX_HEALTH;
+        health = max_health;
+        _sprite.setTexture(textures::romb_tank_texture);
+    }
+
+    float get_speed() {
+        return speed;
     }
 
     void update(float time) override = 0;
