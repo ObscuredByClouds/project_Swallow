@@ -31,11 +31,9 @@ void RombTankInputController::update(ControlledObject& object, float time) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         position_updated.x -= tank->get_speed() * time;
-        // tank->set_angle();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         position_updated.x += tank->get_speed() * time;
-        // tank->set_angle();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         position_updated.y -= tank->get_speed() * time;
