@@ -5,6 +5,7 @@
 #include "textures.hpp"
 #include "controllers.hpp"
 #include "game_objects.hpp"
+#include <memory>
 #include <iostream>
 
 int main() {
