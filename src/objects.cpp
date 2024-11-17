@@ -11,14 +11,19 @@ void ControlledObject::set_position(sf::Vector2f &position)
     _position = position;
 };
 
+void ControlledObject::set_texture_rectangle(sf::IntRect rectangle)
+{
+    _sprite.setTextureRect(rectangle);
+}
+        
 void ControlledObject::set_sprite_position(sf::Vector2f &position)
 {
     _sprite.setPosition(position);
 };
 
-/* void set_angle(float new_angle) {
-    angle = new_angle;
-}; */
+void ControlledObject::set_angle(float new_angle) {
+    _angle = new_angle;
+};
 
 sf::Sprite ControlledObject::get_sprite() const {
     return _sprite;
@@ -28,9 +33,9 @@ sf::Vector2f ControlledObject::get_position() const {
     return _position;
 };
 
-/* float get_angle() const {
-    return angle;
-}; */
+float ControlledObject::get_angle() const {
+    return _angle;
+};
 
 ControlledObject::ControlledObject(
     std::unique_ptr<Controller> controller,

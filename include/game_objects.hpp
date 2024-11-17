@@ -5,8 +5,6 @@
 #include "controllers.hpp"
 #include "textures.hpp"
 
-//class Controller;  // Forward declaration
-
 class RombTank : public ControlledObject {
 
 protected:

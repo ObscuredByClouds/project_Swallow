@@ -20,7 +20,7 @@ class ControlledObject : public Object {
 
         std::unique_ptr<Controller> _controller;
         sf::Vector2f _position;
-        //float angle;
+        float _angle;
         sf::Sprite _sprite;
 
     public:
@@ -29,18 +29,17 @@ class ControlledObject : public Object {
 
         void set_position(sf::Vector2f &position);
 
+        void set_texture_rectangle(sf::IntRect rectangle);
+
         void set_sprite_position(sf::Vector2f &position);
-        /* void set_angle(float new_angle) {
-            angle = new_angle;
-        }; */
+
+        void set_angle(float new_angle);
 
         sf::Sprite get_sprite() const;
 
         sf::Vector2f get_position() const;
 
-        /* float get_angle() const {
-            return angle;
-        }; */
+        float get_angle() const;
 
         ControlledObject(std::unique_ptr<Controller> controller,const sf::Vector2f &position);
 

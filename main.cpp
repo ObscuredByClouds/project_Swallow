@@ -5,6 +5,7 @@
 #include "textures.hpp"
 #include "controllers.hpp"
 #include "game_objects.hpp"
+#include <iostream>
 
 int main() {
 
@@ -20,10 +21,24 @@ int main() {
     );
 
     sf::Clock clock;
+
+    sf::Clock fpsClock;
+    int frameCount = 0;
+    float fps = 0.0f;
+    sf::Font font;
+    if (!font.loadFromFile("./fonts/arial.ttf")) { // Замените "arial.ttf" на путь к вашему файлу шрифта
+        std::cerr << "Ошибка загрузки шрифта" << std::endl;
+        return -1;
+    }
+    sf::Text fpsText;
+    fpsText.setFont(font);
+    fpsText.setCharacterSize(24); // Размер текста
+    fpsText.setFillColor(sf::Color::Black); // Цвет текста
+    fpsText.setPosition(0.f, 0.f); // Позиция текста
+
     while (window.isOpen()) {
-        float time = clock.getElapsedTime().asMicroseconds();
+        float time = clock.getElapsedTime().asSeconds();
         clock.restart();
-        time /= 300;
 
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -31,12 +46,19 @@ int main() {
                 window.close();
         }
 
+        frameCount++;
+        if (fpsClock.getElapsedTime().asSeconds() >= 1.0f) {
+            fps = frameCount / fpsClock.restart().asSeconds();
+            frameCount = 0;
+
+            // Обновление текста FPS
+            fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
+        }
+
         romb_tank.update(time);
-
         window.clear(sf::Color::White);
-
         window.draw(romb_tank.get_sprite());
-
+        window.draw(fpsText);
         window.display();
     }
 
