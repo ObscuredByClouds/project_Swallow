@@ -21,6 +21,11 @@ void ControlledObject::set_sprite_position(sf::Vector2f &position)
     _sprite.setPosition(position);
 };
 
+void ControlledObject::set_sprite_rotation(float angle)
+{
+    _sprite.setRotation(angle);
+};
+
 void ControlledObject::set_angle(float new_angle) {
     _angle = new_angle;
 };

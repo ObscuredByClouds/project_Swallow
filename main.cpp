@@ -10,10 +10,11 @@
 int main() {
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Project Swallow");
+    window.setFramerateLimit(180);
 
     textures::set_textures();
 
-    auto controller = std::make_unique<RombTankInputController>();
+    auto controller = std::make_unique<RombTankInputController>(window);
 
     RombTank romb_tank(
         std::move(controller),
@@ -26,7 +27,7 @@ int main() {
     int frameCount = 0;
     float fps = 0.0f;
     sf::Font font;
-    if (!font.loadFromFile("./fonts/arial.ttf")) { // Замените "arial.ttf" на путь к вашему файлу шрифта
+    if (!font.loadFromFile("./fonts/arial.ttf")) {
         std::cerr << "Ошибка загрузки шрифта" << std::endl;
         return -1;
     }

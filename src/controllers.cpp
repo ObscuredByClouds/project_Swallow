@@ -1,7 +1,8 @@
 #include "controllers.hpp"
 #include <iostream>
+#include <cmath>
 
-RombTankInputController::RombTankInputController() : elapsed_time(0.0),
+RombTankInputController::RombTankInputController(sf::RenderWindow& window) : _window(window), elapsed_time(0.0),
     frame_width(32), frame_height(32), n_frames(9), frame_duration(0.11), current_frame(0) {};
     
 void RombTankInputController::update(ControlledObject& object, float time) {
@@ -11,26 +12,28 @@ void RombTankInputController::update(ControlledObject& object, float time) {
 
     elapsed_time += time;
     if (elapsed_time >= frame_duration) {
-        // Переходим к следующему кадру
         current_frame = (current_frame + 1) % n_frames;
 
-        // Вычисляем позицию нового кадра в текстуре
-        int column = current_frame % 3;  // 3 - количество колонок в вашем спрайтшите
-        int row = current_frame / 3;     // 3 - количество строк в вашем спрайтшите
+        int column = current_frame % 3;
+        int row = current_frame / 3;   
 
-        // Устанавливаем новый прямоугольник текстуры
         object.set_texture_rectangle(sf::IntRect(column * frame_width, row * frame_height, frame_width, frame_height));
 
-        // Сбрасываем накопленное время
         elapsed_time -= frame_duration;
     }
+
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
+    sf::Vector2f spritePosition = object.get_sprite().getPosition();
+    float dx = mousePosition.x - spritePosition.x;
+    float dy = mousePosition.y - spritePosition.y;
+    float angle = std::atan2(dy, dx) * 180 / 3.14159;
+    object.set_sprite_rotation(angle + 90.0);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         position_updated.x -= tank->get_speed() * time;
         // tank->set_angle();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        std::cout << "dx " << tank->get_speed() * time << std::endl;
         position_updated.x += tank->get_speed() * time;
         // tank->set_angle();
     }

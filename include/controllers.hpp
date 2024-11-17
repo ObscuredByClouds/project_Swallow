@@ -29,6 +29,9 @@ public:
 
 class RombTankInputController : public Controller {
 
+private:
+    sf::RenderWindow& _window;
+
 protected:
 
     float elapsed_time;
@@ -40,7 +43,7 @@ protected:
 
 public:
 
-    RombTankInputController();
+    RombTankInputController(sf::RenderWindow& window);
 
     void update(ControlledObject& object, float time) override;
 };

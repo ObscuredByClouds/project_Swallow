@@ -3,5 +3,5 @@
 constexpr float WINDOW_HEIGHT = 720.0;
 constexpr float WINDOW_WIDTH  = 1280.0;
 
-constexpr float ROMB_TANK_SPEED = 1280; // pixels/sec
+constexpr float ROMB_TANK_SPEED = 200; // pixels/sec
 constexpr float ROMB_TANK_MAX_HEALTH = 100.0;

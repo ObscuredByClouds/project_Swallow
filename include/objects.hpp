@@ -33,6 +33,8 @@ class ControlledObject : public Object {
 
         void set_sprite_position(sf::Vector2f &position);
 
+        void set_sprite_rotation(float angle);
+
         void set_angle(float new_angle);
 
         sf::Sprite get_sprite() const;

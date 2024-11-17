@@ -9,6 +9,7 @@ RombTank::RombTank(
     health = max_health;
     _sprite.setTexture(textures::romb_tank_texture);
     _sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+    _sprite.setOrigin(16, 16);
 }
 
 float RombTank::get_speed() {
