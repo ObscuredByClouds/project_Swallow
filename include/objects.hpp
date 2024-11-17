@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "constants.hpp"
+#include <memory>
 
 class Controller;
 

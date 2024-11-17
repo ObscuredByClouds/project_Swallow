@@ -4,6 +4,7 @@
 #include "constants.hpp"
 #include "controllers.hpp"
 #include "textures.hpp"
+#include <memory>
 
 //class Controller;  // Forward declaration
 
