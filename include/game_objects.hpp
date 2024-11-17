@@ -5,6 +5,8 @@
 #include "controllers.hpp"
 #include "textures.hpp"
 
+//class Controller;  // Forward declaration
+
 class RombTank : public ControlledObject {
 
 protected:
@@ -15,18 +17,6 @@ protected:
 
 public:
 
-    RombTank(
-        std::unique_ptr<Controller> controller,
-        const sf::Vector2f &position
-    ) : ControlledObject(std::move(controller), position) {
-        speed = ROMB_TANK_SPEED;
-        max_health = ROMB_TANK_MAX_HEALTH;
-        health = max_health;
-        _sprite.setTexture(textures::romb_tank_texture);
-    }
-
-    float get_speed() {
-        return speed;
-    }
-
+    RombTank(std::unique_ptr<Controller> controller, sf::Vector2f position);
+    float get_speed();
 };

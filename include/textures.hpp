@@ -3,9 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 namespace textures {
-    sf::Texture romb_tank_texture;
+    extern sf::Texture romb_tank_texture; // Объявление
 
-    static void set_textures() {
-        romb_tank_texture.loadFromFile("./textures/romb_tank.png");
-    }
+    void set_textures(); // Объявление функции
 }

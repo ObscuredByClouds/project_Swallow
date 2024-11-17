@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include "include/constants.hpp"
-#include "include/objects.hpp"
-#include "include/textures.hpp"
+#include "constants.hpp"
+#include "objects.hpp"
+#include "textures.hpp"
+#include "controllers.hpp"
+#include "game_objects.hpp"
 
 int main() {
 
@@ -10,9 +12,11 @@ int main() {
 
     textures::set_textures();
 
+    auto controller = std::make_unique<RombTankInputController>();
+
     RombTank romb_tank(
-        std::make_unique<TankInputController>(),
-        sf::Vector2f(0, 0)
+        std::move(controller),
+        sf::Vector2f(400.0f, 300.0f)
     );
 
     sf::Clock clock;
@@ -37,4 +41,4 @@ int main() {
     }
 
     return 0;
-   }
+}        

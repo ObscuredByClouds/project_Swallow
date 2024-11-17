@@ -1,0 +1,98 @@
+содержание файла controllers.hpp:
+
+#pragma once
+
+#include "objects.hpp"
+#include "constants.hpp"
+#include "game_objects.hpp"
+
+class Controller {
+
+public:
+    virtual ~Controller() = default;
+
+    virtual void update(ControlledObject& object, float time) = 0;
+};
+
+class RombTankInputController : public Controller {
+
+public:
+
+    void update(RombTank& object, float time) {};
+};
+
+содержание файла game_objects.hpp:
+
+#pragma once
+
+#include "objects.hpp"
+#include "constants.hpp"
+#include "controllers.hpp"
+#include "textures.hpp"
+
+class RombTank : public ControlledObject {
+
+protected:
+
+    float speed;
+    float health;
+    float max_health;
+
+public:
+
+    RombTank(std::unique_ptr<Controller> controller,const sf::Vector2f &position);
+    float get_speed();
+};
+
+Содеожимое constants.hpp
+
+#pragma once
+
+constexpr float WINDOW_HEIGHT = 720.0;
+constexpr float WINDOW_WIDTH  = 1280.0;
+
+constexpr float ROMB_TANK_SPEED = 0.12;
+constexpr float ROMB_TANK_MAX_HEALTH = 100.0;
+
+
+Содержимое objects.hpp: 
+
+#pragma once
+
+#include <SFML/Graphics.hpp>
+#include "constants.hpp"
+#include "controllers.hpp"
+
+class Object {
+
+public:
+
+    virtual ~Object() = default;
+
+    void update(float time) {};
+
+};
+
+class ControlledObject : public Object {
+
+    protected:
+
+        std::unique_ptr<Controller> _controller;
+        sf::Vector2f _position;
+        sf::Sprite _sprite;
+
+    public:
+
+        void set_sprite(sf::Texture& texture);
+
+        void set_position(sf::Vector2f &position);
+
+        sf::Sprite get_sprite() const;
+
+        sf::Vector2f get_position() const;
+
+        ControlledObject(std::unique_ptr<Controller> controller,const sf::Vector2f &position);
+
+        void update(float time) {};
+
+};
