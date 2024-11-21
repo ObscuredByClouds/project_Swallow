@@ -2,46 +2,85 @@
 #include <iostream>
 #include <cmath>
 
-RombTankInputController::RombTankInputController(sf::RenderWindow& window) : _window(window), elapsed_time(0.0),
-    frame_width(32), frame_height(32), n_frames(9), frame_duration(0.11), current_frame(0) {};
-    
-void RombTankInputController::update(ControlledObject& object, float time) {
-    auto* tank = dynamic_cast<RombTank*>(&object);
-    if (!tank) return;
-    sf::Vector2f position_updated = tank->get_position();
+// Common RombTank animation stuff
+RombTankController::RombTankController() :
+    elapsed_time(0.0), frame_width(32), frame_height(32),
+    n_frames(9), frame_duration(0.11), current_frame(0) {};
 
+void RombTankController::updateAnimation(float time, ControlledObject& object) {
     elapsed_time += time;
     if (elapsed_time >= frame_duration) {
         current_frame = (current_frame + 1) % n_frames;
-
-        int column = current_frame % 3;
-        int row = current_frame / 3;   
-
-        object.set_texture_rectangle(sf::IntRect(column * frame_width, row * frame_height, frame_width, frame_height));
-
         elapsed_time -= frame_duration;
     }
+    updateTextureRectangle(object);
+}
 
+void RombTankController::updateTextureRectangle(ControlledObject& object) {
+    int column = current_frame % 3;
+    int row = current_frame / 3;
+    object.set_texture_rectangle(sf::IntRect(column * frame_width, row * frame_height, frame_width, frame_height));
+}
+
+// RombTank Random controller
+RombTankRandomController::RombTankRandomController() {
+    gen = std::mt19937(rd());
+    dis = std::uniform_real_distribution<>(-1.0, 1.0);
+    random_behavior_elapsed_time = 0.0;
+    direction = {0.0f, 0.0f};
+}
+
+void RombTankRandomController::update(ControlledObject& object, float time) {
+    updateAnimation(time, object);
+    random_behavior_elapsed_time += time;
+    if (random_behavior_elapsed_time >= 1.0f) {
+        direction = sf::Vector2f(dis(gen), dis(gen));
+        random_behavior_elapsed_time = 0.0f;
+    }
+
+    sf::Vector2f position_updated = object.get_position();
+    position_updated += direction * object.get_speed() * time;
+
+    float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159;
+    object.set_sprite_rotation(angle + 90.0);
+
+    object.set_sprite_position(position_updated);
+    object.set_position(position_updated);
+}
+
+// RombTank Input controller
+RombTankInputController::RombTankInputController(sf::RenderWindow& window) :
+    RombTankController(), _window(window) {};
+
+void RombTankInputController::updateRotation(ControlledObject& object) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
     sf::Vector2f spritePosition = object.get_sprite().getPosition();
     float dx = mousePosition.x - spritePosition.x;
     float dy = mousePosition.y - spritePosition.y;
     float angle = std::atan2(dy, dx) * 180 / 3.14159;
     object.set_sprite_rotation(angle + 90.0);
+}
+
+void RombTankInputController::updatePosition(ControlledObject& object, float time) {
+    sf::Vector2f position_updated = object.get_position();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        position_updated.x -= tank->get_speed() * time;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        position_updated.x += tank->get_speed() * time;
+        position_updated.x -= object.get_speed() * time;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        position_updated.x += object.get_speed() * time;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        position_updated.y -= tank->get_speed() * time;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        position_updated.y += tank->get_speed() * time;
+        position_updated.y -= object.get_speed() * time;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        position_updated.y += object.get_speed() * time;
     }
 
     object.set_sprite_position(position_updated);
     object.set_position(position_updated);
+}
+
+void RombTankInputController::update(ControlledObject& object, float time) {
+    updateAnimation(time, object);
+    updateRotation(object);
+    updatePosition(object, time);
 }

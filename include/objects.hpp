@@ -26,27 +26,30 @@ class ControlledObject : public Object {
 
     public:
 
-        void set_sprite(sf::Texture& texture);
-
-        void set_position(sf::Vector2f &position);
-
-        void set_texture_rectangle(sf::IntRect rectangle);
-
-        void set_sprite_position(sf::Vector2f &position);
-
-        void set_sprite_rotation(float angle);
-
-        void set_angle(float new_angle);
-
-        sf::Sprite get_sprite() const;
-
-        sf::Vector2f get_position() const;
-
-        float get_angle() const;
-
         ControlledObject(std::unique_ptr<Controller> controller,const sf::Vector2f &position);
+
+        // position
+        sf::Vector2f get_position() const;
+        void         set_position(const sf::Vector2f& position);
+
+        // texture rectangle (for animation)
+        void set_texture_rectangle(const sf::IntRect& rectangle);
+
+        // sprite management
+        sf::Sprite get_sprite() const;
+        void       set_sprite(sf::Texture& texture);
+        void set_sprite_rotation(float angle);
+        void set_sprite_position(const sf::Vector2f& position);
+
+        // angle management
+        float get_angle() const;
+        void  set_angle(float new_angle);
 
         void update(float time) override;
 
+        // pure virtual functions for convinience
+        virtual float get_speed() const = 0;
+
+        // unused stuff
         // void setController(std::unique_ptr<Controller> controller) {};
 };

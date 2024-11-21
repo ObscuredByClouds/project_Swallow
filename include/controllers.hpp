@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <random>
+
 #include "objects.hpp"
 #include "constants.hpp"
 #include "game_objects.hpp"
@@ -15,25 +18,17 @@ public:
 /* class ZeroController : public Controller {
 public:
     void update(ControlledObject& object, float time) override;
-};
+}; */
 
-class RandomController : public Controller {
-public:
-    void update(ControlledObject& object, float time) override;
-};
-
-class AIController : public Controller {
+/* class RandomController : public Controller {
 public:
     void update(ControlledObject& object, float time) override;
 }; */
 
-class RombTankInputController : public Controller {
+class RombTankController : public Controller {
 
 private:
-    sf::RenderWindow& _window;
-
-protected:
-
+    // animation parameters, common for every RombTank
     float elapsed_time;
     int frame_width;
     int frame_height;
@@ -42,8 +37,46 @@ protected:
     int current_frame;
 
 public:
+    RombTankController();
+    virtual ~RombTankController() = default;
 
-    RombTankInputController(sf::RenderWindow& window);
+    // animation functions, also common for every RombTank
+    void updateAnimation(float time, ControlledObject& object);
+
+    void updateTextureRectangle(ControlledObject& object);
+};
+
+// RombTank Random controller
+class RombTankRandomController : public RombTankController {
+
+private:
+    std::random_device rd;
+    std::mt19937 gen;
+    std::uniform_real_distribution<> dis;
+    float random_behavior_elapsed_time;
+    sf::Vector2f direction;
+
+public:
+    RombTankRandomController();
 
     void update(ControlledObject& object, float time) override;
+};
+
+
+// RombTank Input controller
+class RombTankInputController : public RombTankController {
+
+private:
+    sf::RenderWindow& _window;
+
+private:
+
+    void updateRotation(ControlledObject& object);
+    void updatePosition(ControlledObject& object, float time);
+
+public:
+
+    RombTankInputController(sf::RenderWindow& window);
+    void update(ControlledObject& object, float time) override;
+
 };
