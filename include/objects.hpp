@@ -53,3 +53,18 @@ class ControlledObject : public Object {
         // unused stuff
         // void setController(std::unique_ptr<Controller> controller) {};
 };
+
+class ControlledObjectsContainer {
+
+private:
+
+    std::vector<std::unique_ptr<ControlledObject>> _objects;
+
+public:
+
+    void add_object(std::unique_ptr<ControlledObject> object);
+
+    void update(float time);
+
+    void draw(sf::RenderWindow& window);
+};

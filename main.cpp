@@ -6,17 +6,13 @@ int main() {
 
     textures::set_textures();
 
+    ControlledObjectsContainer container;
+
     auto controller = std::make_unique<RombTankInputController>(window);
-    RombTank romb_tank(
-        std::move(controller),
-        sf::Vector2f(400.0f, 300.0f)
-    );
+    container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(400.0f, 300.0f)));
 
     auto random_controller = std::make_unique<RombTankRandomController>();
-    RombTank random_romb_tank(
-        std::move(random_controller),
-        sf::Vector2f(400.0f, 300.0f)
-    );
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller), sf::Vector2f(400.0f, 300.0f)));
 
     sf::Clock clock;
     FPSCounter fpsCounter;
@@ -31,11 +27,10 @@ int main() {
                 window.close();
         }
 
-        romb_tank.update(time);
-        random_romb_tank.update(time);
+        container.update(time);
+
         window.clear(sf::Color::White);
-        window.draw(romb_tank.get_sprite());
-        window.draw(random_romb_tank.get_sprite());
+        container.draw(window);
         fpsCounter.update(window);
         window.display();
     }

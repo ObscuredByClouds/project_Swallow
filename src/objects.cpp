@@ -35,3 +35,19 @@ void ControlledObject::update(float time) {
 /* void ControlledObject::setController(std::unique_ptr<Controller> controller) {
     _controller = std::move(controller);
 } */
+
+void ControlledObjectsContainer::add_object(std::unique_ptr<ControlledObject> object) {
+    _objects.push_back(std::move(object));
+}
+
+void ControlledObjectsContainer::update(float time) {
+    for (auto& object : _objects) {
+        object->update(time);
+    }
+}
+
+void ControlledObjectsContainer::draw(sf::RenderWindow& window) {
+    for (const auto& object : _objects) {
+        window.draw(object->get_sprite());
+    }
+}
