@@ -20,7 +20,7 @@ public:
     void update(ControlledObject& object, float time) override;
 }; */
 
-/* class RandomController : public Controller {
+/* class AIController : public Controller {
 public:
     void update(ControlledObject& object, float time) override;
 }; */
@@ -50,11 +50,12 @@ public:
 class RombTankRandomController : public RombTankController {
 
 private:
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_real_distribution<> dis;
+    std::random_device random_device;
+    std::mt19937 generator;
+    std::uniform_real_distribution<> distribution;
     float random_behavior_elapsed_time;
     sf::Vector2f direction;
+    bool moving_flag;
 
 public:
     RombTankRandomController();

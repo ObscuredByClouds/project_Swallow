@@ -14,6 +14,18 @@ int main() {
     auto random_controller = std::make_unique<RombTankRandomController>();
     container.add_object(std::make_unique<RombTank>(std::move(random_controller), sf::Vector2f(400.0f, 300.0f)));
 
+    auto random_controller_2 = std::make_unique<RombTankRandomController>();
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_2), sf::Vector2f(400.0f, 300.0f)));
+    
+    auto random_controller_3 = std::make_unique<RombTankRandomController>();
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_3), sf::Vector2f(400.0f, 300.0f)));
+    
+    auto random_controller_4 = std::make_unique<RombTankRandomController>();
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_4), sf::Vector2f(400.0f, 300.0f)));
+    
+    auto random_controller_5 = std::make_unique<RombTankRandomController>();
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_5), sf::Vector2f(400.0f, 300.0f)));
+
     sf::Clock clock;
     FPSCounter fpsCounter;
 

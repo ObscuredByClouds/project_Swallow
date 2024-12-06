@@ -24,22 +24,27 @@ void RombTankController::updateTextureRectangle(ControlledObject& object) {
 
 // RombTank Random controller
 RombTankRandomController::RombTankRandomController() {
-    gen = std::mt19937(rd());
-    dis = std::uniform_real_distribution<>(-1.0, 1.0);
+    generator = std::mt19937(random_device());
+    distribution = std::uniform_real_distribution<>(-1.0, 1.0);
     random_behavior_elapsed_time = 0.0;
     direction = {0.0f, 0.0f};
+    moving_flag = false;
 }
 
 void RombTankRandomController::update(ControlledObject& object, float time) {
     updateAnimation(time, object);
     random_behavior_elapsed_time += time;
     if (random_behavior_elapsed_time >= 1.0f) {
-        direction = sf::Vector2f(dis(gen), dis(gen));
+        moving_flag = !moving_flag;
+        if (moving_flag)
+            direction = sf::Vector2f(distribution(generator), distribution(generator));
         random_behavior_elapsed_time = 0.0f;
     }
 
     sf::Vector2f position_updated = object.get_position();
-    position_updated += direction * object.get_speed() * time;
+
+    if (moving_flag)
+        position_updated += direction * object.get_speed() * time;
 
     float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159;
     object.set_sprite_rotation(angle + 90.0);
