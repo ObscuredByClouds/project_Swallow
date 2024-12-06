@@ -6,7 +6,7 @@ int main() {
 
     textures::set_textures();
 
-    ControlledObjectsContainer container;
+    ControlledObjectsContainer& container = ControlledObjectsContainer::getInstance();
 
     auto controller = std::make_unique<RombTankInputController>(window);
     container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(400.0f, 300.0f)));

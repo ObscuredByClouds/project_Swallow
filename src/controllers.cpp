@@ -47,7 +47,7 @@ void RombTankRandomController::update(ControlledObject& object, float time) {
         position_updated += direction * object.get_speed() * time;
 
     float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159;
-    object.set_sprite_rotation(angle + 90.0);
+    object.set_sprite_rotation(angle + 90.0); // TODO refactor. Store all angles in rad!
 
     object.set_sprite_position(position_updated);
     object.set_position(position_updated);
@@ -57,12 +57,21 @@ void RombTankRandomController::update(ControlledObject& object, float time) {
 RombTankInputController::RombTankInputController(sf::RenderWindow& window) :
     RombTankController(), _window(window) {};
 
-void RombTankInputController::updateRotation(ControlledObject& object) {
+void RombTankInputController::updateRotation(ControlledObject& object, float time) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
     sf::Vector2f spritePosition = object.get_sprite().getPosition();
     float dx = mousePosition.x - spritePosition.x;
     float dy = mousePosition.y - spritePosition.y;
     float angle = std::atan2(dy, dx) * 180 / 3.14159;
+
+    RombTank& tank = dynamic_cast<RombTank&>(object);
+    if (tank.get_cooldown_timer() > 0)
+        tank.decrement_cooldown_timer(time); // time is rquired only here. Might be better to separate shot processing
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        tank.shoot(ControlledObjectsContainer::getInstance()); // Pass the container to the shoot method
+    }
+    object.set_angle(angle * 3.14159 / 180); // TODO
     object.set_sprite_rotation(angle + 90.0);
 }
 
@@ -86,6 +95,26 @@ void RombTankInputController::updatePosition(ControlledObject& object, float tim
 
 void RombTankInputController::update(ControlledObject& object, float time) {
     updateAnimation(time, object);
-    updateRotation(object);
+    updateRotation(object, time);
     updatePosition(object, time);
+}
+
+
+ShellController::ShellController() {
+    elapsed_time = 0.0f;
+}
+
+void ShellController::update(ControlledObject& object, float time) {
+    Shell* shell = dynamic_cast<Shell*>(&object);
+    if (time + elapsed_time > shell->get_lifetime())
+        object.set_terminate();
+    else
+        elapsed_time += time;
+    //std::cout << "shell angle: " << object.get_angle() << std::endl;
+    sf::Vector2f direction = sf::Vector2f(std::cos(object.get_angle()), std::sin(object.get_angle()));
+    sf::Vector2f position_updated = object.get_position();
+    position_updated += direction * object.get_speed() * time;
+
+    object.set_sprite_position(position_updated);
+    object.set_position(position_updated);
 }

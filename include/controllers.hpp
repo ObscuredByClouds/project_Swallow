@@ -72,7 +72,7 @@ private:
 
 private:
 
-    void updateRotation(ControlledObject& object);
+    void updateRotation(ControlledObject& object, float time);
     void updatePosition(ControlledObject& object, float time);
 
 public:
@@ -80,4 +80,20 @@ public:
     RombTankInputController(sf::RenderWindow& window);
     void update(ControlledObject& object, float time) override;
 
+};
+
+
+class ShellController : public Controller {
+
+private:
+
+    float elapsed_time;
+
+public:
+
+    ShellController();
+
+    virtual ~ShellController() = default;
+
+    void update(ControlledObject& object, float time) override;
 };

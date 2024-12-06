@@ -24,6 +24,10 @@ void ControlledObject::set_sprite_position(const sf::Vector2f &position) {_sprit
 float ControlledObject::get_angle() const {return _angle;};
 void  ControlledObject::set_angle(float new_angle) {_angle = new_angle;};
 
+// spawn/despawn management
+bool ControlledObject::get_terminate() const {return _terminate;};
+void ControlledObject::set_terminate() {_terminate = true;};
+
 // common function for all controlled objects
 void ControlledObject::update(float time) {
     if (_controller) {
@@ -36,13 +40,23 @@ void ControlledObject::update(float time) {
     _controller = std::move(controller);
 } */
 
+ControlledObjectsContainer& ControlledObjectsContainer::getInstance() {
+    static ControlledObjectsContainer instance;
+    return instance;
+}
+
 void ControlledObjectsContainer::add_object(std::unique_ptr<ControlledObject> object) {
     _objects.push_back(std::move(object));
 }
 
 void ControlledObjectsContainer::update(float time) {
-    for (auto& object : _objects) {
-        object->update(time);
+    for (auto it = _objects.begin(); it != _objects.end();) {
+        (*it)->update(time);
+        if ((*it)->get_terminate()) {
+            it = _objects.erase(it);
+        } else {
+            ++it;
+        }
     }
 }
 
