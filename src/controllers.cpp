@@ -27,7 +27,7 @@ void RombTankController::updateTextureRectangle(ControlledObject& object) {
 RombTankRandomController::RombTankRandomController() {
     generator = std::mt19937(random_device());
     distribution = std::uniform_real_distribution<>(-1.0, 1.0);
-    random_behavior_elapsed_time = 0.0;
+    random_behavior_elapsed_time = distribution(generator);
     direction = {0.0f, 0.0f};
     moving_flag = false;
 }
@@ -42,14 +42,23 @@ void RombTankRandomController::update(ControlledObject& object, float time) {
         random_behavior_elapsed_time = 0.0f;
     }
 
+    RombTank& tank = dynamic_cast<RombTank&>(object); // can be separated
+    if (tank.get_cooldown_timer() > 0)
+        tank.decrement_cooldown_timer(time); 
+
+    if (random_behavior_elapsed_time > 0.5 && random_behavior_elapsed_time < 0.55 && distribution(generator) < -0.9) {
+        tank.shoot(ControlledObjectsContainer::getInstance()); // Pass the container to the shoot method
+    } // naive approach
+
     sf::Vector2f position_updated = object.get_position();
 
     if (moving_flag)
         position_updated += direction * object.get_speed() * time;
 
-    float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159;
-    object.set_sprite_rotation(angle + 90.0); // TODO refactor. Store all angles in rad!
+    float angle = std::atan2(direction.y, direction.x);
 
+    object.set_sprite_rotation(angle * 180 / 3.14159 + 90.0); // TODO refactor. Store all angles in rad!
+    object.set_angle(angle);
     object.set_sprite_position(position_updated);
     object.set_position(position_updated);
 }
