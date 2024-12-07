@@ -6,6 +6,8 @@ ControlledObject::ControlledObject(
     const sf::Vector2f &position
 ) : _controller(std::move(controller)), _position(position) {}
 
+ControlledObject::~ControlledObject() {}
+
 // position
 sf::Vector2f ControlledObject::get_position() const {return _position;};
 void         ControlledObject::set_position(const sf::Vector2f& position) {_position = position;};
@@ -50,14 +52,16 @@ void ControlledObjectsContainer::add_object(std::unique_ptr<ControlledObject> ob
 }
 
 void ControlledObjectsContainer::update(float time) {
-    for (auto it = _objects.begin(); it != _objects.end();) {
-        (*it)->update(time);
-        if ((*it)->get_terminate()) {
-            it = _objects.erase(it);
-        } else {
-            ++it;
-        }
+    for (auto& object : _objects) {
+        object->update(time);
     }
+
+    _objects.erase(
+        std::remove_if(_objects.begin(), _objects.end(), [](const std::unique_ptr<ControlledObject>& obj) {
+            return obj->get_terminate();
+        }),
+        _objects.end()
+    );
 }
 
 void ControlledObjectsContainer::draw(sf::RenderWindow& window) {

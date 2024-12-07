@@ -1,6 +1,7 @@
 #include "controllers.hpp"
-#include <iostream>
 #include <cmath>
+
+void ZeroController::update(ControlledObject& /*object*/, float /*time*/) {}
 
 // Common RombTank animation stuff
 RombTankController::RombTankController() :
@@ -62,7 +63,7 @@ void RombTankInputController::updateRotation(ControlledObject& object, float tim
     sf::Vector2f spritePosition = object.get_sprite().getPosition();
     float dx = mousePosition.x - spritePosition.x;
     float dy = mousePosition.y - spritePosition.y;
-    float angle = std::atan2(dy, dx) * 180 / 3.14159;
+    float angle = std::atan2(dy, dx);
 
     RombTank& tank = dynamic_cast<RombTank&>(object);
     if (tank.get_cooldown_timer() > 0)
@@ -71,8 +72,8 @@ void RombTankInputController::updateRotation(ControlledObject& object, float tim
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         tank.shoot(ControlledObjectsContainer::getInstance()); // Pass the container to the shoot method
     }
-    object.set_angle(angle * 3.14159 / 180); // TODO
-    object.set_sprite_rotation(angle + 90.0);
+    object.set_angle(angle);
+    object.set_sprite_rotation(angle * 180 / 3.14159 + 90.0);
 }
 
 void RombTankInputController::updatePosition(ControlledObject& object, float time) {
@@ -110,7 +111,6 @@ void ShellController::update(ControlledObject& object, float time) {
         object.set_terminate();
     else
         elapsed_time += time;
-    //std::cout << "shell angle: " << object.get_angle() << std::endl;
     sf::Vector2f direction = sf::Vector2f(std::cos(object.get_angle()), std::sin(object.get_angle()));
     sf::Vector2f position_updated = object.get_position();
     position_updated += direction * object.get_speed() * time;

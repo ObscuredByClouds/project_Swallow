@@ -6,6 +6,15 @@
 #include "textures.hpp"
 #include <memory>
 
+class DummyAxis : public ControlledObject {
+
+public:
+
+    DummyAxis(std::unique_ptr<Controller> controller, sf::Vector2f position);
+    float get_speed() const override {return 0.0f;}; // TODO should not be here
+
+};
+
 class RombTank : public ControlledObject {
 
 private:
@@ -15,6 +24,7 @@ private:
     float _max_health;
     float _cooldown;
     float _cooldown_timer;
+    sf::Vector2f _barrel_displacement_from_sprite_center;
 
 public:
 

@@ -15,10 +15,10 @@ public:
     virtual void update(ControlledObject& object, float time) = 0;
 };
 
-/* class ZeroController : public Controller {
+class ZeroController : public Controller {
 public:
     void update(ControlledObject& object, float time) override;
-}; */
+};
 
 /* class AIController : public Controller {
 public:

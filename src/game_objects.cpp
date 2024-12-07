@@ -1,18 +1,24 @@
 #include "game_objects.hpp"
-#include <iostream>
+
+DummyAxis::DummyAxis(std::unique_ptr<Controller> controller, sf::Vector2f position) : ControlledObject(std::move(controller), position) {
+    _sprite.setTexture(textures::axis_texture);
+    _sprite.setPosition(position);
+};
 
 RombTank::RombTank(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position
 ) : ControlledObject(std::move(controller), position) {
+    int sprite_pixel_length = 32;
     _speed = ROMB_TANK_SPEED;
     _max_health = ROMB_TANK_MAX_HEALTH;
     _health = _max_health;
     _sprite.setTexture(textures::romb_tank_texture);
-    _sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
-    _sprite.setOrigin(16, 16);
+    _sprite.setTextureRect(sf::IntRect(0, 0, sprite_pixel_length, sprite_pixel_length));
+    _sprite.setOrigin(sprite_pixel_length/2, sprite_pixel_length/2);
     _cooldown = 1.0f;
     _cooldown_timer = 0.0f;
+    _barrel_displacement_from_sprite_center = {float(sprite_pixel_length/2), 0.0f};
 }
 
 float RombTank::get_speed() const {
@@ -38,15 +44,20 @@ void RombTank::decrement_cooldown_timer(float time) {
 void RombTank::shoot(ControlledObjectsContainer& container) {
     if (_cooldown_timer <= 0) {
         auto shell_controller = std::make_unique<ShellController>();
-        std::cout << "crreating a shell with angle " << _angle << std::endl;
+        float cos_angle = std::cos(_angle);
+        float sin_angle = std::sin(_angle);
+        sf::Vector2f rotated_offset(
+            cos_angle * _barrel_displacement_from_sprite_center.x - sin_angle * _barrel_displacement_from_sprite_center.y,
+            sin_angle * _barrel_displacement_from_sprite_center.x + cos_angle * _barrel_displacement_from_sprite_center.y
+        );
         container.add_object(
             std::make_unique<Shell>(
                 std::move(shell_controller),
-                _position,
+                _position + rotated_offset,
                 _angle,
-                200.0f,
-                10.0f,
-                1.0f
+                ROMB_TANK_SHELL_SPEED,
+                ROMB_TANK_SHELL_DAMAGE,
+                ROMB_TANK_SHELL_LIFETIME
             )
         );
         _cooldown_timer = _cooldown;
@@ -55,16 +66,20 @@ void RombTank::shoot(ControlledObjectsContainer& container) {
 
 Shell::Shell(std::unique_ptr<Controller> controller, sf::Vector2f position, float angle, float speed, float damage, float lifetime)
     : ControlledObject(std::move(controller), position)
-{
+{   
+    int sprite_pixel_length = 15;
     _speed = speed;
     _damage = damage;
     _lifetime = lifetime;
+    _sprite.setScale(0.7, 0.7);
+    _sprite.setRotation(angle * 180 / 3.14159 + 90);
+    _sprite.setOrigin(sprite_pixel_length/2.0, sprite_pixel_length/2.0);
     _sprite.setTexture(textures::romb_tank_shell_texture);
     set_angle(angle);
 }
 
 Shell::~Shell() {
-    // explosion
+    // explode
 }
 
 float Shell::get_speed() const {
