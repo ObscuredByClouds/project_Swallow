@@ -6,6 +6,7 @@
 #include "objects.hpp"
 #include "constants.hpp"
 #include "game_objects.hpp"
+#include "utilities/math_helpers.hpp"
 
 class Controller {
 
@@ -15,10 +16,10 @@ public:
     virtual void update(ControlledObject& object, float time) = 0;
 };
 
-/* class ZeroController : public Controller {
+class ZeroController : public Controller {
 public:
     void update(ControlledObject& object, float time) override;
-}; */
+};
 
 /* class AIController : public Controller {
 public:
@@ -29,12 +30,12 @@ class RombTankController : public Controller {
 
 private:
     // animation parameters, common for every RombTank
-    float elapsed_time;
-    int frame_width;
-    int frame_height;
-    int n_frames;
-    float frame_duration;
-    int current_frame;
+    float _elapsed_time;
+    int _frame_width;
+    int _frame_height;
+    int _n_frames;
+    float _frame_duration;
+    int _current_frame;
 
 public:
     RombTankController();
@@ -50,12 +51,13 @@ public:
 class RombTankRandomController : public RombTankController {
 
 private:
-    std::random_device random_device;
-    std::mt19937 generator;
-    std::uniform_real_distribution<> distribution;
-    float random_behavior_elapsed_time;
-    sf::Vector2f direction;
-    bool moving_flag;
+    std::random_device _random_device;
+    std::mt19937 _generator;
+    std::uniform_real_distribution<> _angle_distribution;
+    float _random_behavior_elapsed_time;
+    float _next_shot_elapsed_time;
+    float _time_to_next_shot;
+    bool _moving_flag;
 
 public:
     RombTankRandomController();
@@ -72,7 +74,7 @@ private:
 
 private:
 
-    void updateRotation(ControlledObject& object);
+    void updateRotation(ControlledObject& object, float time);
     void updatePosition(ControlledObject& object, float time);
 
 public:
@@ -80,4 +82,20 @@ public:
     RombTankInputController(sf::RenderWindow& window);
     void update(ControlledObject& object, float time) override;
 
+};
+
+
+class ShellController : public Controller {
+
+private:
+
+    float _elapsed_time;
+
+public:
+
+    ShellController();
+
+    virtual ~ShellController() = default;
+
+    void update(ControlledObject& object, float time) override;
 };

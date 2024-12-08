@@ -6,10 +6,13 @@ int main() {
 
     textures::set_textures();
 
-    ControlledObjectsContainer container;
+    ControlledObjectsContainer& container = ControlledObjectsContainer::getInstance();
+
+    auto zero_controller = std::make_unique<ZeroController>();
+    container.add_object(std::make_unique<DummyAxis>(std::move(zero_controller), sf::Vector2f(200.0f, 400.0f)));
 
     auto controller = std::make_unique<RombTankInputController>(window);
-    container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(200.0f, 400.0f)));
 
     auto random_controller = std::make_unique<RombTankRandomController>();
     container.add_object(std::make_unique<RombTank>(std::move(random_controller), sf::Vector2f(400.0f, 300.0f)));
