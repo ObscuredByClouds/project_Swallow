@@ -47,7 +47,7 @@ public:
 };
 
 // RombTank Random controller
-class RombTankRandomController : public RombTankController {
+class RandomRombTankController : public RombTankController {
 
 private:
     std::random_device random_device;
@@ -58,14 +58,14 @@ private:
     bool moving_flag;
 
 public:
-    RombTankRandomController();
+    RandomRombTankController();
 
     void update(ControlledObject& object, float time) override;
 };
 
 
 // RombTank Input controller
-class RombTankInputController : public RombTankController {
+class InputRombTankController : public RombTankController {
 
 private:
     sf::RenderWindow& _window;
@@ -77,7 +77,7 @@ private:
 
 public:
 
-    RombTankInputController(sf::RenderWindow& window);
+    InputRombTankController(sf::RenderWindow& window);
     void update(ControlledObject& object, float time) override;
 
 };

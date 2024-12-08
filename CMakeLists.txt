@@ -23,6 +23,7 @@ set(
     include/objects.hpp
     include/textures.hpp
     include/swallow_lib.hpp
+    include/views.hpp
 )
 
 set(
@@ -32,6 +33,7 @@ set(
     src/game_objects.cpp
     src/objects.cpp
     src/textures.cpp
+    src/views.cpp
 )
 
 include_directories(include)
