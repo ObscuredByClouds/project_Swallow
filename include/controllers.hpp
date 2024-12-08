@@ -29,12 +29,12 @@ class RombTankController : public Controller {
 
 private:
     // animation parameters, common for every RombTank
-    float elapsed_time;
-    int frame_width;
-    int frame_height;
-    int n_frames;
-    float frame_duration;
-    int current_frame;
+    float _elapsed_time;
+    int _frame_width;
+    int _frame_height;
+    int _n_frames;
+    float _frame_duration;
+    int _current_frame;
 
 public:
     RombTankController();
@@ -50,12 +50,12 @@ public:
 class RombTankRandomController : public RombTankController {
 
 private:
-    std::random_device random_device;
-    std::mt19937 generator;
-    std::uniform_real_distribution<> distribution;
-    float random_behavior_elapsed_time;
-    sf::Vector2f direction;
-    bool moving_flag;
+    std::random_device _random_device;
+    std::mt19937 _generator;
+    std::uniform_real_distribution<> _distribution;
+    float _random_behavior_elapsed_time;
+    sf::Vector2f _direction;
+    bool _moving_flag;
 
 public:
     RombTankRandomController();
@@ -87,7 +87,7 @@ class ShellController : public Controller {
 
 private:
 
-    float elapsed_time;
+    float _elapsed_time;
 
 public:
 
