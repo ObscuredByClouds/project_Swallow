@@ -26,41 +26,45 @@ void RombTankController::updateTextureRectangle(ControlledObject& object) {
 // RombTank Random controller
 RombTankRandomController::RombTankRandomController() {
     _generator = std::mt19937(_random_device());
-    _distribution = std::uniform_real_distribution<>(-1.0, 1.0);
-    _random_behavior_elapsed_time = _distribution(_generator);
-    _direction = {0.0f, 0.0f};
+    _angle_distribution = std::uniform_real_distribution<>(0.0, 2 * 3.14159);
+    _random_behavior_elapsed_time = _angle_distribution(_generator) / (4 * 3.14159);
+    _next_shot_elapsed_time = 0.0f;
+    _time_to_next_shot = _angle_distribution(_generator) / 2.0; // TODO: could be smarter
     _moving_flag = false;
 }
 
 void RombTankRandomController::update(ControlledObject& object, float time) {
-    updateAnimation(time, object);
+    RombTank& tank = dynamic_cast<RombTank&>(object); // cast to use tank-specific attributes 
+
     _random_behavior_elapsed_time += time;
-    if (_random_behavior_elapsed_time >= 1.0f) {
+    _next_shot_elapsed_time += time;
+    if (_random_behavior_elapsed_time >= 0.5f) {
         _moving_flag = !_moving_flag;
-        if (_moving_flag)
-            _direction = sf::Vector2f(_distribution(_generator), _distribution(_generator));
+        if (_moving_flag) {
+            tank.set_angle(_angle_distribution(_generator));
+            tank.set_direction(angle_to_direction(tank.get_angle()));
+        }
         _random_behavior_elapsed_time = 0.0f;
     }
 
-    RombTank& tank = dynamic_cast<RombTank&>(object); // can be separated
     if (tank.get_cooldown_timer() > 0)
         tank.decrement_cooldown_timer(time); 
 
-    if (_random_behavior_elapsed_time > 0.5 && _random_behavior_elapsed_time < 0.55 && _distribution(_generator) < -0.9) {
-        tank.shoot(ControlledObjectsContainer::getInstance()); // Pass the container to the shoot method
-    } // naive approach
+    if (_next_shot_elapsed_time > _time_to_next_shot) {
+        _next_shot_elapsed_time = 0.0f;
+        tank.shoot(ControlledObjectsContainer::getInstance());
+        _time_to_next_shot = _angle_distribution(_generator) / 2.0;
+    }
 
-    sf::Vector2f position_updated = object.get_position();
+    sf::Vector2f position_updated = tank.get_position();
 
     if (_moving_flag)
-        position_updated += _direction * object.get_speed() * time;
+        position_updated += tank.get_direction() * tank.get_speed() * time;
 
-    float angle = std::atan2(_direction.y, _direction.x);
-
-    object.set_sprite_rotation(angle * 180 / 3.14159 + 90.0);
-    object.set_angle(angle);
-    object.set_sprite_position(position_updated);
-    object.set_position(position_updated);
+    updateAnimation(time, tank);
+    tank.set_sprite_rotation(tank.get_angle() * 180 / 3.14159 + 90.0);
+    tank.set_sprite_position(position_updated);
+    tank.set_position(position_updated);
 }
 
 // RombTank Input controller

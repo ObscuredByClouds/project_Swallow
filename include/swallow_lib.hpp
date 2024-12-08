@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <memory>
@@ -9,4 +11,4 @@
 #include "controllers.hpp"
 #include "game_objects.hpp"
 #include "utilities/fps_counter.hpp"
-
+#include "utilities/math_helpers.hpp"

@@ -3,8 +3,9 @@
 
 ControlledObject::ControlledObject(
     std::unique_ptr<Controller> controller,
-    const sf::Vector2f &position
-) : _controller(std::move(controller)), _position(position) {}
+    const sf::Vector2f &position,
+    const float &angle
+) : _controller(std::move(controller)), _position(position), _angle(angle) {}
 
 ControlledObject::~ControlledObject() {}
 

@@ -27,7 +27,7 @@ class ControlledObject : public Object {
 
     public:
 
-        ControlledObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position);
+        ControlledObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position, const float &angle);
         virtual ~ControlledObject();
 
         // position

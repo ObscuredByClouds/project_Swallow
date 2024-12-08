@@ -6,6 +6,7 @@
 #include "objects.hpp"
 #include "constants.hpp"
 #include "game_objects.hpp"
+#include "utilities/math_helpers.hpp"
 
 class Controller {
 
@@ -52,9 +53,10 @@ class RombTankRandomController : public RombTankController {
 private:
     std::random_device _random_device;
     std::mt19937 _generator;
-    std::uniform_real_distribution<> _distribution;
+    std::uniform_real_distribution<> _angle_distribution;
     float _random_behavior_elapsed_time;
-    sf::Vector2f _direction;
+    float _next_shot_elapsed_time;
+    float _time_to_next_shot;
     bool _moving_flag;
 
 public:
