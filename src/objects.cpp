@@ -52,6 +52,10 @@ void ControlledObjectsContainer::add_object(std::unique_ptr<ControlledObject> ob
     _objects.push_back(std::move(object));
 }
 
+ControlledObject& ControlledObjectsContainer::operator[](size_t index) {
+    return *_objects[index];
+}
+
 void ControlledObjectsContainer::update(float time) {
     for (auto& object : _objects) {
         object->update(time);

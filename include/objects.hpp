@@ -78,6 +78,8 @@ public:
 
     void add_object(std::unique_ptr<ControlledObject> object);
 
+    ControlledObject& operator[](size_t index);
+
     void update(float time);
 
     void draw(sf::RenderWindow& window);

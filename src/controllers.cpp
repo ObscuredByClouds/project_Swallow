@@ -24,7 +24,7 @@ void RombTankController::updateTextureRectangle(ControlledObject& object) {
 }
 
 // RombTank Random controller
-RombTankRandomController::RombTankRandomController() {
+RandomRombTankController::RandomRombTankController() {
     _generator = std::mt19937(_random_device());
     _angle_distribution = std::uniform_real_distribution<>(0.0, 2 * 3.14159);
     _random_behavior_elapsed_time = _angle_distribution(_generator) / (4 * 3.14159);
@@ -33,7 +33,7 @@ RombTankRandomController::RombTankRandomController() {
     _moving_flag = false;
 }
 
-void RombTankRandomController::update(ControlledObject& object, float time) {
+void RandomRombTankController::update(ControlledObject& object, float time) {
     RombTank& tank = dynamic_cast<RombTank&>(object); // cast to use tank-specific attributes 
 
     _random_behavior_elapsed_time += time;
@@ -68,11 +68,11 @@ void RombTankRandomController::update(ControlledObject& object, float time) {
 }
 
 // RombTank Input controller
-RombTankInputController::RombTankInputController(sf::RenderWindow& window) :
+InputRombTankController::InputRombTankController(sf::RenderWindow& window) :
     RombTankController(), _window(window) {};
 
-void RombTankInputController::updateRotation(ControlledObject& object, float time) {
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
+void InputRombTankController::updateRotation(ControlledObject& object, float time) {
+    sf::Vector2f mousePosition = _window.mapPixelToCoords(sf::Mouse::getPosition(_window));
     sf::Vector2f spritePosition = object.get_sprite().getPosition();
     float dx = mousePosition.x - spritePosition.x;
     float dy = mousePosition.y - spritePosition.y;
@@ -89,17 +89,19 @@ void RombTankInputController::updateRotation(ControlledObject& object, float tim
     object.set_sprite_rotation(angle * 180 / 3.14159 + 90.0);
 }
 
-void RombTankInputController::updatePosition(ControlledObject& object, float time) {
+void InputRombTankController::updatePosition(ControlledObject& object, float time) {
     sf::Vector2f position_updated = object.get_position();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         position_updated.x -= object.get_speed() * time;
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         position_updated.x += object.get_speed() * time;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         position_updated.y -= object.get_speed() * time;
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         position_updated.y += object.get_speed() * time;
     }
 
@@ -107,7 +109,7 @@ void RombTankInputController::updatePosition(ControlledObject& object, float tim
     object.set_position(position_updated);
 }
 
-void RombTankInputController::update(ControlledObject& object, float time) {
+void InputRombTankController::update(ControlledObject& object, float time) {
     updateAnimation(time, object);
     updateRotation(object, time);
     updatePosition(object, time);

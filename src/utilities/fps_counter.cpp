@@ -1,7 +1,9 @@
 #include "utilities/fps_counter.hpp"
+#include <filesystem>
 
 FPSCounter::FPSCounter() {
-    if (!font.loadFromFile("./fonts/arial.ttf")) {
+    std::filesystem::path relativePathToFont = "./fonts/arial.ttf";
+    if (!font.loadFromFile(relativePathToFont.native())) {
         std::cerr << "Error: font is not loaded" << std::endl;
         return;
     }
