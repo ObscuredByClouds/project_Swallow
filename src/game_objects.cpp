@@ -89,6 +89,7 @@ Shell::Shell(std::unique_ptr<Controller> controller, sf::Vector2f position, floa
     _speed = speed;
     _damage = damage;
     _lifetime = lifetime;
+    _sprite.setPosition(position);
     _sprite.setScale(0.7, 0.7);
     _sprite.setRotation(angle * 180 / 3.14159 + 90);
     _sprite.setOrigin(sprite_pixel_length/2.0, sprite_pixel_length/2.0);
