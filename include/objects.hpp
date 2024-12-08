@@ -23,10 +23,12 @@ class ControlledObject : public Object {
         sf::Vector2f _position;
         float _angle;
         sf::Sprite _sprite;
+        bool _terminate = false;
 
     public:
 
-        ControlledObject(std::unique_ptr<Controller> controller,const sf::Vector2f &position);
+        ControlledObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position, const float &angle);
+        virtual ~ControlledObject();
 
         // position
         sf::Vector2f get_position() const;
@@ -45,6 +47,10 @@ class ControlledObject : public Object {
         float get_angle() const;
         void  set_angle(float new_angle);
 
+        // spawn/despawn management
+        bool get_terminate() const;
+        void set_terminate();
+
         void update(float time) override;
 
         // pure virtual functions for convinience
@@ -60,9 +66,19 @@ private:
 
     std::vector<std::unique_ptr<ControlledObject>> _objects;
 
+private:
+
+    ControlledObjectsContainer() = default;
+    ControlledObjectsContainer(const ControlledObjectsContainer&) = delete;
+    ControlledObjectsContainer& operator=(const ControlledObjectsContainer&) = delete;
+
 public:
 
+    static ControlledObjectsContainer& getInstance();
+
     void add_object(std::unique_ptr<ControlledObject> object);
+
+    ControlledObject& operator[](size_t index);
 
     void update(float time);
 

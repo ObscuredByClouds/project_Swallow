@@ -17,6 +17,7 @@ find_package(doctest REQUIRED)
 set(
     HEADERS
     include/utilities/fps_counter.hpp
+    include/utilities/math_helpers.hpp
     include/constants.hpp
     include/controllers.hpp
     include/game_objects.hpp
@@ -29,6 +30,7 @@ set(
 set(
     SOURCES
     src/utilities/fps_counter.cpp
+    src/utilities/math_helpers.cpp
     src/controllers.cpp
     src/game_objects.cpp
     src/objects.cpp
