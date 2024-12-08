@@ -51,7 +51,6 @@ int main() {
         fpsCounter.update(window);
         followView(view, container[1]);
         window.setView(view);
-        //std::cout << view.getCenter().x;
         window.display();
     }
 
