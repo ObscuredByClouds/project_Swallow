@@ -49,7 +49,7 @@ int main() {
 
         window.setView(window.getDefaultView());
         fpsCounter.update(window);
-        followView(view, container[1]);
+        view_follow_target(view, container[1]);
         window.setView(view);
         window.display();
     }
