@@ -3,7 +3,7 @@
 #include "objects.hpp"
 #include "constants.hpp"
 #include "controllers.hpp"
-#include "textures.hpp"
+#include "resources.hpp"
 #include <memory>
 
 #include "utilities/math_helpers.hpp"

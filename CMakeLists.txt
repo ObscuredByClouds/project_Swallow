@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.13) # declare the minimum required CMake versio
 project(project_swallow VERSION 1.0 LANGUAGES CXX) # project name, version and language
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # C++ standart
+get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY) # Check if the directory is subproject
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wextra")
 
@@ -14,35 +15,14 @@ find_package(SFML ${SFML_VERSION} REQUIRED COMPONENTS graphics window system REQ
 # doctest
 find_package(doctest REQUIRED)
 
-set(
-    HEADERS
-    include/utilities/fps_counter.hpp
-    include/utilities/math_helpers.hpp
-    include/constants.hpp
-    include/controllers.hpp
-    include/game_objects.hpp
-    include/objects.hpp
-    include/textures.hpp
-    include/swallow_lib.hpp
-    include/views.hpp
-)
-
-set(
-    SOURCES
-    src/utilities/fps_counter.cpp
-    src/utilities/math_helpers.cpp
-    src/controllers.cpp
-    src/game_objects.cpp
-    src/objects.cpp
-    src/textures.cpp
-    src/views.cpp
-)
-
 include_directories(include)
+
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE HEADERS "include/*.hpp")
 
 add_library(swallow_lib ${SOURCES} ${HEADERS})
 
-add_executable(project_swallow main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 
 option(SWALLOW_TESTING "Enable module testing" ON)
 option(SWALLOW_COVERAGE "Enable code coverage" OFF)
