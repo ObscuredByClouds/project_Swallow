@@ -11,12 +11,14 @@ DummyAxis::DummyAxis(
 RombTank::RombTank(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position,
-    float angle
+    float angle,
+    int team
 ) : ControlledObject(std::move(controller), position, angle) {
     int sprite_pixel_length = 32;
     _speed = ROMB_TANK_SPEED;
     _max_health = ROMB_TANK_MAX_HEALTH;
     _health = _max_health;
+    _team = team;
     _direction = angle_to_direction(angle);
     _sprite.setTexture(textures::romb_tank_texture);
     _sprite.setTextureRect(sf::IntRect(0, 0, sprite_pixel_length, sprite_pixel_length));
@@ -28,8 +30,14 @@ RombTank::RombTank(
 
 RombTank::RombTank(
     std::unique_ptr<Controller> controller,
+    sf::Vector2f position,
+    float angle
+) : RombTank(std::move(controller), position, angle, -1) {}
+
+RombTank::RombTank(
+    std::unique_ptr<Controller> controller,
     sf::Vector2f position
-) : RombTank(std::move(controller), position, 0.0f) {}
+) : RombTank(std::move(controller), position, 0.0f, -1) {}
 
 float RombTank::get_speed() const {
     return _speed;
@@ -75,20 +83,35 @@ void RombTank::shoot(ControlledObjectsContainer& container) {
                 _angle,
                 ROMB_TANK_SHELL_SPEED,
                 ROMB_TANK_SHELL_DAMAGE,
-                ROMB_TANK_SHELL_LIFETIME
+                ROMB_TANK_SHELL_LIFETIME,
+                _team
             )
         );
         _cooldown_timer = _cooldown;
     }
 }
 
-Shell::Shell(std::unique_ptr<Controller> controller, sf::Vector2f position, float angle, float speed, float damage, float lifetime)
-    : ControlledObject(std::move(controller), position, angle)
-{   
+void RombTank::take_damage(float damage) {
+    _health -= damage;
+    if (_health <= 0) {
+        set_terminate(); // Destroy the tank
+    }
+}
+
+Shell::Shell(
+    std::unique_ptr<Controller> controller,
+    sf::Vector2f position,
+    float angle,
+    float speed,
+    float damage,
+    float lifetime,
+    int team
+) : ControlledObject(std::move(controller), position, angle) {   
     int sprite_pixel_length = 15;
     _speed = speed;
     _damage = damage;
     _lifetime = lifetime;
+    _team = team;
     _sprite.setPosition(position);
     _sprite.setScale(0.7, 0.7);
     _sprite.setRotation(angle * 180 / 3.14159 + 90);

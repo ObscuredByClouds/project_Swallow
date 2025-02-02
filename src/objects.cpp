@@ -61,6 +61,35 @@ void ControlledObjectsContainer::update(float time) {
         object->update(time);
     }
 
+    // Check for collisions between shells and tanks
+    // TODO: cathegorize objects (tanks/shells) or use Spatial Partitioning or use std::async
+    for (size_t i = 0; i < _objects.size(); ++i) {
+        if (_objects[i]->get_terminate()) continue;
+
+        ControlledObject& obj1 = *_objects[i];
+        if (dynamic_cast<Shell*>(&obj1)) {
+            Shell* shell = dynamic_cast<Shell*>(&obj1);
+
+            for (size_t j = 0; j < _objects.size(); ++j) {
+                if (i == j || _objects[j]->get_terminate()) continue;
+
+                ControlledObject& obj2 = *_objects[j];
+                if (dynamic_cast<RombTank*>(&obj2)) {
+                    RombTank* tank = dynamic_cast<RombTank*>(&obj2);
+
+                    // Check if they belong to different teams
+                    if (shell->get_team() != tank->get_team()) {
+                        if (check_collision(shell->get_sprite(), tank->get_sprite())) {
+                            tank->take_damage(shell->get_damage());
+                            shell->set_terminate(); // Remove the shell
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     _objects.erase(
         std::remove_if(_objects.begin(), _objects.end(), [](const std::unique_ptr<ControlledObject>& obj) {
             return obj->get_terminate();
