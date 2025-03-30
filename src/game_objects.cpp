@@ -3,7 +3,7 @@
 DummyAxis::DummyAxis(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position
-) : ControlledObject(std::move(controller), position, 0.0f) {
+) : DynamicObject(std::move(controller), position, 0.0f) {
     _sprite.setTexture(textures::axis_texture);
     _sprite.setPosition(position);
 };
@@ -13,7 +13,7 @@ RombTank::RombTank(
     sf::Vector2f position,
     float angle,
     int team
-) : ControlledObject(std::move(controller), position, angle) {
+) : DynamicObject(std::move(controller), position, angle) {
     int sprite_pixel_length = 32;
     _speed = ROMB_TANK_SPEED;
     _max_health = ROMB_TANK_MAX_HEALTH;
@@ -67,7 +67,7 @@ void RombTank::decrement_cooldown_timer(float time) {
     _cooldown_timer -= time;
 };
 
-void RombTank::shoot(ControlledObjectsContainer& container) {
+void RombTank::shoot(Scene& container) {
     if (_cooldown_timer <= 0) {
         auto shell_controller = std::make_unique<ShellController>();
         float cos_angle = std::cos(_angle);
@@ -106,7 +106,7 @@ Shell::Shell(
     float damage,
     float lifetime,
     int team
-) : ControlledObject(std::move(controller), position, angle) {   
+) : DynamicObject(std::move(controller), position, angle) {   
     int sprite_pixel_length = 15;
     _speed = speed;
     _damage = damage;

@@ -13,17 +13,17 @@ class Controller {
 public:
     virtual ~Controller() = default;
 
-    virtual void update(ControlledObject& object, float time) = 0;
+    virtual void update(DynamicObject& object, float time) = 0;
 };
 
 class ZeroController : public Controller {
 public:
-    void update(ControlledObject& object, float time) override;
+    void update(DynamicObject& object, float time) override;
 };
 
 /* class AIController : public Controller {
 public:
-    void update(ControlledObject& object, float time) override;
+    void update(DynamicObject& object, float time) override;
 }; */
 
 class RombTankController : public Controller {
@@ -42,9 +42,9 @@ public:
     virtual ~RombTankController() = default;
 
     // animation functions, also common for every RombTank
-    void updateAnimation(float time, ControlledObject& object);
+    void updateAnimation(float time, DynamicObject& object);
 
-    void updateTextureRectangle(ControlledObject& object);
+    void updateTextureRectangle(DynamicObject& object);
 };
 
 // RombTank Random controller
@@ -62,7 +62,7 @@ private:
 public:
     RandomRombTankController();
 
-    void update(ControlledObject& object, float time) override;
+    void update(DynamicObject& object, float time) override;
 };
 
 
@@ -74,13 +74,13 @@ private:
 
 private:
 
-    void updateRotation(ControlledObject& object, float time);
-    void updatePosition(ControlledObject& object, float time);
+    void updateRotation(DynamicObject& object, float time);
+    void updatePosition(DynamicObject& object, float time);
 
 public:
 
     InputRombTankController(sf::RenderWindow& window);
-    void update(ControlledObject& object, float time) override;
+    void update(DynamicObject& object, float time) override;
 
 };
 
@@ -97,5 +97,5 @@ public:
 
     virtual ~ShellController() = default;
 
-    void update(ControlledObject& object, float time) override;
+    void update(DynamicObject& object, float time) override;
 };

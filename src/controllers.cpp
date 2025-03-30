@@ -1,14 +1,14 @@
 #include "controllers.hpp"
 #include <cmath>
 
-void ZeroController::update(ControlledObject& /*object*/, float /*time*/) {}
+void ZeroController::update(DynamicObject& /*object*/, float /*time*/) {}
 
 // Common RombTank animation stuff
 RombTankController::RombTankController() :
     _elapsed_time(0.0), _frame_width(32), _frame_height(32),
     _n_frames(9), _frame_duration(0.11), _current_frame(0) {};
 
-void RombTankController::updateAnimation(float time, ControlledObject& object) {
+void RombTankController::updateAnimation(float time, DynamicObject& object) {
     _elapsed_time += time;
     if (_elapsed_time >= _frame_duration) {
         _current_frame = (_current_frame + 1) % _n_frames;
@@ -17,7 +17,7 @@ void RombTankController::updateAnimation(float time, ControlledObject& object) {
     updateTextureRectangle(object);
 }
 
-void RombTankController::updateTextureRectangle(ControlledObject& object) {
+void RombTankController::updateTextureRectangle(DynamicObject& object) {
     int column = _current_frame % 3;
     int row = _current_frame / 3;
     object.set_texture_rectangle(sf::IntRect(column * _frame_width, row * _frame_height, _frame_width, _frame_height));
@@ -33,7 +33,7 @@ RandomRombTankController::RandomRombTankController() {
     _moving_flag = false;
 }
 
-void RandomRombTankController::update(ControlledObject& object, float time) {
+void RandomRombTankController::update(DynamicObject& object, float time) {
     RombTank& tank = dynamic_cast<RombTank&>(object); // cast to use tank-specific attributes 
 
     _random_behavior_elapsed_time += time;
@@ -52,7 +52,7 @@ void RandomRombTankController::update(ControlledObject& object, float time) {
 
     if (_next_shot_elapsed_time > _time_to_next_shot) {
         _next_shot_elapsed_time = 0.0f;
-        tank.shoot(ControlledObjectsContainer::getInstance());
+        tank.shoot(Scene::getInstance());
         _time_to_next_shot = _angle_distribution(_generator) / 2.0;
     }
 
@@ -71,7 +71,7 @@ void RandomRombTankController::update(ControlledObject& object, float time) {
 InputRombTankController::InputRombTankController(sf::RenderWindow& window) :
     RombTankController(), _window(window) {};
 
-void InputRombTankController::updateRotation(ControlledObject& object, float time) {
+void InputRombTankController::updateRotation(DynamicObject& object, float time) {
     sf::Vector2f mousePosition = _window.mapPixelToCoords(sf::Mouse::getPosition(_window));
     sf::Vector2f spritePosition = object.get_sprite().getPosition();
     float dx = mousePosition.x - spritePosition.x;
@@ -83,13 +83,13 @@ void InputRombTankController::updateRotation(ControlledObject& object, float tim
         tank.decrement_cooldown_timer(time); // time is rquired only here. Might be better to separate shot processing
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        tank.shoot(ControlledObjectsContainer::getInstance()); // Pass the container to the shoot method
+        tank.shoot(Scene::getInstance()); // Pass the container to the shoot method
     }
     object.set_angle(angle);
     object.set_sprite_rotation(angle * 180 / 3.14159 + 90.0);
 }
 
-void InputRombTankController::updatePosition(ControlledObject& object, float time) {
+void InputRombTankController::updatePosition(DynamicObject& object, float time) {
     sf::Vector2f position_updated = object.get_position();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -109,7 +109,7 @@ void InputRombTankController::updatePosition(ControlledObject& object, float tim
     object.set_position(position_updated);
 }
 
-void InputRombTankController::update(ControlledObject& object, float time) {
+void InputRombTankController::update(DynamicObject& object, float time) {
     updateAnimation(time, object);
     updateRotation(object, time);
     updatePosition(object, time);
@@ -120,7 +120,7 @@ ShellController::ShellController() {
     _elapsed_time = 0.0f;
 }
 
-void ShellController::update(ControlledObject& object, float time) {
+void ShellController::update(DynamicObject& object, float time) {
     Shell* shell = dynamic_cast<Shell*>(&object);
     if (time + _elapsed_time > shell->get_lifetime())
         object.set_terminate();

@@ -5,7 +5,7 @@ int main() {
     window.setFramerateLimit(999);
     textures::set_textures();
 
-    ControlledObjectsContainer& container = ControlledObjectsContainer::getInstance();
+    Scene& container = Scene::getInstance();
 
     auto zero_controller = std::make_unique<ZeroController>();
     container.add_object(std::make_unique<DummyAxis>(std::move(zero_controller), sf::Vector2f(0.0f, 0.0f)));

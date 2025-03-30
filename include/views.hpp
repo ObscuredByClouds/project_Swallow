@@ -4,4 +4,4 @@
 #include "objects.hpp"
 
 
-void view_follow_target(sf::View& view, ControlledObject& target);
+void view_follow_target(sf::View& view, DynamicObject& target);

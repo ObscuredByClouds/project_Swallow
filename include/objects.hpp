@@ -13,9 +13,10 @@ public:
     virtual ~Object() = default;
 
     virtual void update(float time) = 0;
+    virtual void draw(sf::RenderWindow& window) = 0;
 };
 
-class ControlledObject : public Object {
+class DynamicObject : public Object {
 
     protected:
 
@@ -27,8 +28,8 @@ class ControlledObject : public Object {
 
     public:
 
-        ControlledObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position, const float &angle);
-        virtual ~ControlledObject();
+        DynamicObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position, const float &angle);
+        virtual ~DynamicObject();
 
         // position
         sf::Vector2f get_position() const;
@@ -51,7 +52,9 @@ class ControlledObject : public Object {
         bool get_terminate() const;
         void set_terminate();
 
+        // scene utilities
         void update(float time) override;
+        void draw(sf::RenderWindow& window) override;
 
         // pure virtual functions for convinience
         virtual float get_speed() const = 0;
@@ -60,25 +63,25 @@ class ControlledObject : public Object {
         // void setController(std::unique_ptr<Controller> controller) {};
 };
 
-class ControlledObjectsContainer {
+class Scene {
 
 private:
 
-    std::vector<std::unique_ptr<ControlledObject>> _objects;
+    std::vector<std::unique_ptr<DynamicObject>> _objects;
 
 private:
 
-    ControlledObjectsContainer() = default;
-    ControlledObjectsContainer(const ControlledObjectsContainer&) = delete;
-    ControlledObjectsContainer& operator=(const ControlledObjectsContainer&) = delete;
+    Scene() = default;
+    Scene(const Scene&) = delete;
+    Scene& operator=(const Scene&) = delete;
 
 public:
 
-    static ControlledObjectsContainer& getInstance();
+    static Scene& getInstance();
 
-    void add_object(std::unique_ptr<ControlledObject> object);
+    void add_object(std::unique_ptr<DynamicObject> object);
 
-    ControlledObject& operator[](size_t index);
+    DynamicObject& operator[](size_t index);
 
     void update(float time);
 

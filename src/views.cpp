@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-void view_follow_target(sf::View& view, ControlledObject& target) {
+void view_follow_target(sf::View& view, DynamicObject& target) {
     float Xoffset = target.get_position().x - view.getCenter().x;
     float Yoffset = target.get_position().y - view.getCenter().y;
     auto smoothFollow = [](float i){

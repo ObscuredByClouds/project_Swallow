@@ -8,7 +8,7 @@
 
 #include "utilities/math_helpers.hpp"
 
-class DummyAxis : public ControlledObject {
+class DummyAxis : public DynamicObject {
 
 public:
 
@@ -17,7 +17,7 @@ public:
 
 };
 
-class RombTank : public ControlledObject {
+class RombTank : public DynamicObject {
 
 private:
 
@@ -41,7 +41,7 @@ public:
     sf::Vector2f get_direction() const;
     void set_direction(sf::Vector2f direction);
 
-    void shoot(ControlledObjectsContainer& container);
+    void shoot(Scene& container);
 
     float get_cooldown() const;
     float get_cooldown_timer() const;
@@ -55,7 +55,7 @@ public:
     void take_damage(float damage);
 };
 
-class Shell : public ControlledObject {
+class Shell : public DynamicObject {
 
 private:
 
