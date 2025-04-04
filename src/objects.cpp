@@ -38,9 +38,9 @@ void DynamicObject::update(float time) {
     }
 }
 
-void DynamicObject::draw(sf::RenderWindow& window) {
-    window.draw(this->get_sprite());
-}
+/* void DynamicObject::draw(sf::RenderWindow& window) {
+    this->draw(window);
+} */
 
 // unused stuff
 /* void DynamicObject::setController(std::unique_ptr<Controller> controller) {

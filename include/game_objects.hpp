@@ -7,14 +7,40 @@
 #include <memory>
 
 #include "utilities/math_helpers.hpp"
+#include "utilities/log.hpp"
 
 class DummyAxis : public DynamicObject {
 
 public:
 
     DummyAxis(std::unique_ptr<Controller> controller, sf::Vector2f position);
-    float get_speed() const override {return 0.0f;}; // TODO should not be here
+    float get_speed() const override {return 0.0f;}; // TODO should not be here. It`s because DynamicObject must have get_speed.
+    void draw(sf::RenderWindow& window) override;
+};
 
+class HealthBar : public Object {
+
+private:
+
+    sf::Vector2f _size;
+    sf::Vector2f _displacement;
+    sf::RectangleShape background;
+    sf::RectangleShape fill;
+
+public:
+
+    HealthBar(
+        const sf::Vector2f& size,
+        const sf::Vector2f& displacement,
+        const sf::Color& background_color,
+        const sf::Color& fill_color
+    );
+
+    void set_sprite_position(const sf::Vector2f& position);
+
+    void set_ratio(float ratio);
+
+    void draw(sf::RenderWindow& window) override;
 };
 
 class RombTank : public DynamicObject {
@@ -29,6 +55,7 @@ private:
     sf::Vector2f _direction;
     sf::Vector2f _barrel_displacement_from_sprite_center;
     int _team; // Team identifier
+    HealthBar healtbar;
 
 public:
 
@@ -41,6 +68,7 @@ public:
     sf::Vector2f get_direction() const;
     void set_direction(sf::Vector2f direction);
 
+    void set_position(const sf::Vector2f& position) override;
     void shoot(Scene& container);
 
     float get_cooldown() const;
@@ -53,6 +81,8 @@ public:
 
     int get_team() const { return _team; }
     void take_damage(float damage);
+
+    void draw(sf::RenderWindow& window) override;
 };
 
 class Shell : public DynamicObject {
@@ -76,4 +106,7 @@ public:
     float get_lifetime() const;
 
     int get_team() const { return _team; }
+
+    void draw(sf::RenderWindow& window) override;
 };
+

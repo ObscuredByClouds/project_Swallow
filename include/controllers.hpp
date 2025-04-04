@@ -7,6 +7,7 @@
 #include "constants.hpp"
 #include "game_objects.hpp"
 #include "utilities/math_helpers.hpp"
+#include "utilities/log.hpp"
 
 class Controller {
 

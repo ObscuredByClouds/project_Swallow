@@ -17,6 +17,7 @@ find_package(doctest REQUIRED)
 set(
     HEADERS
     include/utilities/fps_counter.hpp
+    include/utilities/log.hpp
     include/utilities/math_helpers.hpp
     include/constants.hpp
     include/controllers.hpp

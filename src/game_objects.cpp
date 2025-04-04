@@ -8,12 +8,57 @@ DummyAxis::DummyAxis(
     _sprite.setPosition(position);
 };
 
+void DummyAxis::draw(sf::RenderWindow& window) {
+    window.draw(this->get_sprite());
+}
+
+HealthBar::HealthBar(
+    const sf::Vector2f& size,
+    const sf::Vector2f& displacement,
+    const sf::Color& background_color,
+    const sf::Color& fill_color
+)
+: _size(size), _displacement(displacement) {
+    background.setSize(size);
+    background.setFillColor(background_color);
+    background.setOutlineThickness(1.f);
+    background.setOutlineColor(sf::Color::Black);
+
+    fill.setSize(size);
+    fill.setFillColor(fill_color);
+}
+
+void HealthBar::set_sprite_position(const sf::Vector2f& position) {
+    background.setPosition(position+_displacement);
+    fill.setPosition(position+_displacement);
+}
+
+void HealthBar::set_ratio(float ratio) {
+    fill.setSize(sf::Vector2f(_size.x * ratio, _size.y));
+}
+
+void HealthBar::draw(sf::RenderWindow& window) {
+    window.draw(background);
+    window.draw(fill);
+}
+
 RombTank::RombTank(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position,
     float angle,
     int team
-) : DynamicObject(std::move(controller), position, angle) {
+) : DynamicObject(std::move(controller), position, angle), 
+    healtbar(
+        HealthBar(
+            sf::Vector2f(50.f, 5.f),
+            sf::Vector2f(-25.f, 20.f),
+            sf::Color(100, 100, 100),
+            sf::Color::Green
+        )
+    ) 
+{
+    LOG_TRACE();
+
     int sprite_pixel_length = 32;
     _speed = ROMB_TANK_SPEED;
     _max_health = ROMB_TANK_MAX_HEALTH;
@@ -26,6 +71,7 @@ RombTank::RombTank(
     _cooldown = 1.0f;
     _cooldown_timer = 0.0f;
     _barrel_displacement_from_sprite_center = {float(sprite_pixel_length/2), 0.0f};
+    healtbar.set_sprite_position(position);
 }
 
 RombTank::RombTank(
@@ -49,6 +95,11 @@ sf::Vector2f RombTank::get_direction() const {
 
 void RombTank::set_direction(sf::Vector2f direction) {
     _direction = direction;
+};
+
+void RombTank::set_position(const sf::Vector2f& position) {
+    _position = position;
+    healtbar.set_sprite_position(position);
 };
 
 float RombTank::get_cooldown() const {
@@ -92,9 +143,20 @@ void RombTank::shoot(Scene& container) {
 }
 
 void RombTank::take_damage(float damage) {
+    LOG_TRACE();
+
     _health -= damage;
     if (_health <= 0) {
         set_terminate(); // Destroy the tank
+    } else {
+        healtbar.set_ratio(_health / ROMB_TANK_MAX_HEALTH);
+    }
+}
+
+void RombTank::draw(sf::RenderWindow& window) {
+    window.draw(this->get_sprite());
+    if (_health < ROMB_TANK_MAX_HEALTH && 0 < _health) {
+        healtbar.draw(window);
     }
 }
 
@@ -134,4 +196,8 @@ float Shell::get_damage() const {
 
 float Shell::get_lifetime() const {
     return _lifetime;
+}
+
+void Shell::draw(sf::RenderWindow& window) {
+    window.draw(this->get_sprite());
 }

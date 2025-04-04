@@ -12,7 +12,6 @@ public:
 
     virtual ~Object() = default;
 
-    virtual void update(float time) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
 };
 
@@ -33,7 +32,7 @@ class DynamicObject : public Object {
 
         // position
         sf::Vector2f get_position() const;
-        void         set_position(const sf::Vector2f& position);
+        virtual void set_position(const sf::Vector2f& position);
 
         // texture rectangle (for animation)
         void set_texture_rectangle(const sf::IntRect& rectangle);
@@ -53,8 +52,7 @@ class DynamicObject : public Object {
         void set_terminate();
 
         // scene utilities
-        void update(float time) override;
-        void draw(sf::RenderWindow& window) override;
+        void update(float time);
 
         // pure virtual functions for convinience
         virtual float get_speed() const = 0;

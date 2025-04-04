@@ -25,6 +25,7 @@ void RombTankController::updateTextureRectangle(DynamicObject& object) {
 
 // RombTank Random controller
 RandomRombTankController::RandomRombTankController() {
+    LOG_TRACE();
     _generator = std::mt19937(_random_device());
     _angle_distribution = std::uniform_real_distribution<>(0.0, 2 * 3.14159);
     _random_behavior_elapsed_time = _angle_distribution(_generator) / (4 * 3.14159);
