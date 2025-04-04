@@ -1,9 +1,13 @@
 #include "include/swallow_lib.hpp"
+#include <filesystem>
+#include "utilities/get_executable_directory.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Project Swallow");
     window.setFramerateLimit(999);
-    textures::set_textures();
+    resources::load_resources();
+
+    // std::cout << 11 << std::endl << get_executable_directory() / "/src"<< std::endl;
 
     ControlledObjectsContainer& container = ControlledObjectsContainer::getInstance();
 

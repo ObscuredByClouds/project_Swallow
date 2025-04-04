@@ -4,7 +4,7 @@ DummyAxis::DummyAxis(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position
 ) : ControlledObject(std::move(controller), position, 0.0f) {
-    _sprite.setTexture(textures::axis_texture);
+    _sprite.setTexture(resources::axis_texture);
     _sprite.setPosition(position);
 };
 
@@ -18,7 +18,7 @@ RombTank::RombTank(
     _max_health = ROMB_TANK_MAX_HEALTH;
     _health = _max_health;
     _direction = angle_to_direction(angle);
-    _sprite.setTexture(textures::romb_tank_texture);
+    _sprite.setTexture(resources::romb_tank_texture);
     _sprite.setTextureRect(sf::IntRect(0, 0, sprite_pixel_length, sprite_pixel_length));
     _sprite.setOrigin(sprite_pixel_length/2, sprite_pixel_length/2);
     _cooldown = 1.0f;
@@ -93,7 +93,7 @@ Shell::Shell(std::unique_ptr<Controller> controller, sf::Vector2f position, floa
     _sprite.setScale(0.7, 0.7);
     _sprite.setRotation(angle * 180 / 3.14159 + 90);
     _sprite.setOrigin(sprite_pixel_length/2.0, sprite_pixel_length/2.0);
-    _sprite.setTexture(textures::romb_tank_shell_texture);
+    _sprite.setTexture(resources::romb_tank_shell_texture);
     _angle = angle;
 }
 

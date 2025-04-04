@@ -1,8 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <memory>
+#include "resources.hpp"
 
 class FPSCounter {
 
@@ -11,7 +10,6 @@ private:
     sf::Clock fpsClock;
     int frameCount = 0;
     float fps = 0.0f;
-    sf::Font font;
     sf::Text fpsText;
 
 public:

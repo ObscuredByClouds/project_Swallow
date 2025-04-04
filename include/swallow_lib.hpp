@@ -7,7 +7,7 @@
 
 #include "constants.hpp"
 #include "objects.hpp"
-#include "textures.hpp"
+#include "resources.hpp"
 #include "controllers.hpp"
 #include "game_objects.hpp"
 #include "utilities/fps_counter.hpp"

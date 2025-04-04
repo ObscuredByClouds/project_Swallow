@@ -1,13 +1,8 @@
 #include "utilities/fps_counter.hpp"
-#include <filesystem>
+#include "resources.hpp"
 
 FPSCounter::FPSCounter() {
-    std::filesystem::path relativePathToFont = "./fonts/arial.ttf";
-    if (!font.loadFromFile(relativePathToFont.native())) {
-        std::cerr << "Error: font is not loaded" << std::endl;
-        return;
-    }
-    fpsText.setFont(font);
+    fpsText.setFont(resources::arial_font);
     fpsText.setCharacterSize(24); // Text size
     fpsText.setFillColor(sf::Color::Black); // Text color
     fpsText.setPosition(0.f, 0.f); // Text position

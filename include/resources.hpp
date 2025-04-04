@@ -2,10 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace textures {
+namespace resources {
     extern sf::Texture axis_texture;
     extern sf::Texture romb_tank_texture;
     extern sf::Texture romb_tank_shell_texture;
+    extern sf::Font arial_font;
 
-    void set_textures();
+    void load_resources();
 }
