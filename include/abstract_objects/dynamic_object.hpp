@@ -1,19 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include "constants.hpp"
-#include <memory>
-
-class Controller;
-
-class Object {
-
-public:
-
-    virtual ~Object() = default;
-
-    virtual void draw(sf::RenderWindow& window) = 0;
-};
+#include "abstract_objects_common.hpp"
 
 class DynamicObject : public Object {
 
@@ -59,29 +46,4 @@ class DynamicObject : public Object {
 
         // unused stuff
         // void setController(std::unique_ptr<Controller> controller) {};
-};
-
-class Scene {
-
-private:
-
-    std::vector<std::unique_ptr<DynamicObject>> _objects;
-
-private:
-
-    Scene() = default;
-    Scene(const Scene&) = delete;
-    Scene& operator=(const Scene&) = delete;
-
-public:
-
-    static Scene& getInstance();
-
-    void add_object(std::unique_ptr<DynamicObject> object);
-
-    DynamicObject& operator[](size_t index);
-
-    void update(float time);
-
-    void draw(sf::RenderWindow& window);
 };

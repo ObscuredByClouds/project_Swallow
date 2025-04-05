@@ -1,31 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <random>
-
-#include "objects.hpp"
-#include "constants.hpp"
-#include "game_objects.hpp"
-#include "utilities/math_helpers.hpp"
-#include "utilities/log.hpp"
-
-class Controller {
-
-public:
-    virtual ~Controller() = default;
-
-    virtual void update(DynamicObject& object, float time) = 0;
-};
-
-class ZeroController : public Controller {
-public:
-    void update(DynamicObject& object, float time) override;
-};
-
-/* class AIController : public Controller {
-public:
-    void update(DynamicObject& object, float time) override;
-}; */
+#include "controllers_common.hpp"
 
 class RombTankController : public Controller {
 
@@ -83,20 +58,4 @@ public:
     InputRombTankController(sf::RenderWindow& window);
     void update(DynamicObject& object, float time) override;
 
-};
-
-
-class ShellController : public Controller {
-
-private:
-
-    float _elapsed_time;
-
-public:
-
-    ShellController();
-
-    virtual ~ShellController() = default;
-
-    void update(DynamicObject& object, float time) override;
 };

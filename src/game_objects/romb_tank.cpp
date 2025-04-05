@@ -1,46 +1,4 @@
-#include "game_objects.hpp"
-
-DummyAxis::DummyAxis(
-    std::unique_ptr<Controller> controller,
-    sf::Vector2f position
-) : DynamicObject(std::move(controller), position, 0.0f) {
-    _sprite.setTexture(resources::axis_texture);
-    _sprite.setPosition(position);
-};
-
-void DummyAxis::draw(sf::RenderWindow& window) {
-    window.draw(this->get_sprite());
-}
-
-HealthBar::HealthBar(
-    const sf::Vector2f& size,
-    const sf::Vector2f& displacement,
-    const sf::Color& background_color,
-    const sf::Color& fill_color
-)
-: _size(size), _displacement(displacement) {
-    _background.setSize(size);
-    _background.setFillColor(background_color);
-    _background.setOutlineThickness(1.f);
-    _background.setOutlineColor(sf::Color::Black);
-
-    _fill.setSize(size);
-    _fill.setFillColor(fill_color);
-}
-
-void HealthBar::set_sprite_position(const sf::Vector2f& position) {
-    _background.setPosition(position+_displacement);
-    _fill.setPosition(position+_displacement);
-}
-
-void HealthBar::set_ratio(float ratio) {
-    _fill.setSize(sf::Vector2f(_size.x * ratio, _size.y));
-}
-
-void HealthBar::draw(sf::RenderWindow& window) {
-    window.draw(_background);
-    window.draw(_fill);
-}
+#include "game_objects/romb_tank.hpp"
 
 RombTank::RombTank(
     std::unique_ptr<Controller> controller,
@@ -162,46 +120,4 @@ void RombTank::draw(sf::RenderWindow& window) {
     if (_health < ROMB_TANK_MAX_HEALTH && 0 < _health) {
         healtbar.draw(window);
     }
-}
-
-Shell::Shell(
-    std::unique_ptr<Controller> controller,
-    sf::Vector2f position,
-    float angle,
-    float speed,
-    float damage,
-    float lifetime,
-    int team
-) : DynamicObject(std::move(controller), position, angle) {
-    int sprite_pixel_length = 15;
-    _speed = speed;
-    _damage = damage;
-    _lifetime = lifetime;
-    _team = team;
-    _sprite.setPosition(position);
-    _sprite.setScale(0.7, 0.7);
-    _sprite.setRotation(angle * 180 / 3.14159 + 90);
-    _sprite.setOrigin(sprite_pixel_length/2.0, sprite_pixel_length/2.0);
-    _sprite.setTexture(resources::romb_tank_shell_texture);
-    _angle = angle;
-}
-
-Shell::~Shell() {
-    // explode
-}
-
-float Shell::get_speed() const {
-    return _speed;
-}
-
-float Shell::get_damage() const {
-    return _damage;
-}
-
-float Shell::get_lifetime() const {
-    return _lifetime;
-}
-
-void Shell::draw(sf::RenderWindow& window) {
-    window.draw(this->get_sprite());
 }
