@@ -9,28 +9,28 @@ int main() {
 
     // std::cout << 11 << std::endl << get_executable_directory() / "/src"<< std::endl;
 
-    ControlledObjectsContainer& container = ControlledObjectsContainer::getInstance();
+    Scene& container = Scene::getInstance();
 
     auto zero_controller = std::make_unique<ZeroController>();
     container.add_object(std::make_unique<DummyAxis>(std::move(zero_controller), sf::Vector2f(0.0f, 0.0f)));
 
     auto controller = std::make_unique<InputRombTankController>(window);
-    container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(200.0f, 400.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(controller), sf::Vector2f(200.0f, 400.0f), 0.0f, 2));
 
     auto random_controller = std::make_unique<RandomRombTankController>();
-    container.add_object(std::make_unique<RombTank>(std::move(random_controller), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller), sf::Vector2f(400.0f, 300.0f), 0.0f, 1));
 
     auto random_controller_2 = std::make_unique<RandomRombTankController>();
-    container.add_object(std::make_unique<RombTank>(std::move(random_controller_2), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_2), sf::Vector2f(400.0f, 300.0f), 0.0f, 1));
 
     auto random_controller_3 = std::make_unique<RandomRombTankController>();
-    container.add_object(std::make_unique<RombTank>(std::move(random_controller_3), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_3), sf::Vector2f(400.0f, 300.0f), 0.0f, 1));
 
     auto random_controller_4 = std::make_unique<RandomRombTankController>();
-    container.add_object(std::make_unique<RombTank>(std::move(random_controller_4), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_4), sf::Vector2f(400.0f, 300.0f), 0.0f, 1));
 
     auto random_controller_5 = std::make_unique<RandomRombTankController>();
-    container.add_object(std::make_unique<RombTank>(std::move(random_controller_5), sf::Vector2f(400.0f, 300.0f)));
+    container.add_object(std::make_unique<RombTank>(std::move(random_controller_5), sf::Vector2f(400.0f, 300.0f), 0.0f, 1));
 
 
     sf::Clock clock;
