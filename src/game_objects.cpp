@@ -3,8 +3,8 @@
 DummyAxis::DummyAxis(
     std::unique_ptr<Controller> controller,
     sf::Vector2f position
-) : ControlledObject(std::move(controller), position, 0.0f) {
-    _sprite.setTexture(textures::axis_texture);
+) : DynamicObject(std::move(controller), position, 0.0f) {
+    _sprite.setTexture(resources::axis_texture);
     _sprite.setPosition(position);
 };
 
