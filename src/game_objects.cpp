@@ -19,27 +19,27 @@ HealthBar::HealthBar(
     const sf::Color& fill_color
 )
 : _size(size), _displacement(displacement) {
-    background.setSize(size);
-    background.setFillColor(background_color);
-    background.setOutlineThickness(1.f);
-    background.setOutlineColor(sf::Color::Black);
+    _background.setSize(size);
+    _background.setFillColor(background_color);
+    _background.setOutlineThickness(1.f);
+    _background.setOutlineColor(sf::Color::Black);
 
-    fill.setSize(size);
-    fill.setFillColor(fill_color);
+    _fill.setSize(size);
+    _fill.setFillColor(fill_color);
 }
 
 void HealthBar::set_sprite_position(const sf::Vector2f& position) {
-    background.setPosition(position+_displacement);
-    fill.setPosition(position+_displacement);
+    _background.setPosition(position+_displacement);
+    _fill.setPosition(position+_displacement);
 }
 
 void HealthBar::set_ratio(float ratio) {
-    fill.setSize(sf::Vector2f(_size.x * ratio, _size.y));
+    _fill.setSize(sf::Vector2f(_size.x * ratio, _size.y));
 }
 
 void HealthBar::draw(sf::RenderWindow& window) {
-    window.draw(background);
-    window.draw(fill);
+    window.draw(_background);
+    window.draw(_fill);
 }
 
 RombTank::RombTank(
@@ -47,7 +47,11 @@ RombTank::RombTank(
     sf::Vector2f position,
     float angle,
     int team
-) : DynamicObject(std::move(controller), position, angle), 
+) : DynamicObject(
+        std::move(controller),
+        position,
+        angle
+    ),
     healtbar(
         HealthBar(
             sf::Vector2f(50.f, 5.f),
@@ -55,22 +59,22 @@ RombTank::RombTank(
             sf::Color(100, 100, 100),
             sf::Color::Green
         )
-    ) 
+    )
 {
     LOG_TRACE();
 
     int sprite_pixel_length = 32;
     _speed = ROMB_TANK_SPEED;
-    _max_health = ROMB_TANK_MAX_HEALTH;
+    _max_health = ROMB_TANK_MAX_HEALTH; // TODO: Reduce to global / class constants
     _health = _max_health;
     _team = team;
     _direction = angle_to_direction(angle);
     _sprite.setTexture(textures::romb_tank_texture);
     _sprite.setTextureRect(sf::IntRect(0, 0, sprite_pixel_length, sprite_pixel_length));
     _sprite.setOrigin(sprite_pixel_length/2, sprite_pixel_length/2);
-    _cooldown = 1.0f;
+    _cooldown = 1.0f; // TODO: Reduce to global / class constants
     _cooldown_timer = 0.0f;
-    _barrel_displacement_from_sprite_center = {float(sprite_pixel_length/2), 0.0f};
+    _barrel_displacement_from_sprite_center = {float(sprite_pixel_length/2), 0.0f}; // TODO: Reduce to global / class constants
     healtbar.set_sprite_position(position);
 }
 
@@ -168,7 +172,7 @@ Shell::Shell(
     float damage,
     float lifetime,
     int team
-) : DynamicObject(std::move(controller), position, angle) {   
+) : DynamicObject(std::move(controller), position, angle) {
     int sprite_pixel_length = 15;
     _speed = speed;
     _damage = damage;

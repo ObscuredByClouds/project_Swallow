@@ -24,8 +24,8 @@ private:
 
     sf::Vector2f _size;
     sf::Vector2f _displacement;
-    sf::RectangleShape background;
-    sf::RectangleShape fill;
+    sf::RectangleShape _background;
+    sf::RectangleShape _fill;
 
 public:
 

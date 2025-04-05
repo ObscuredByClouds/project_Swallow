@@ -38,11 +38,7 @@ void DynamicObject::update(float time) {
     }
 }
 
-/* void DynamicObject::draw(sf::RenderWindow& window) {
-    this->draw(window);
-} */
-
-// unused stuff
+// unused now
 /* void DynamicObject::setController(std::unique_ptr<Controller> controller) {
     _controller = std::move(controller);
 } */
@@ -102,6 +98,7 @@ void Scene::update(float time) {
     );
 }
 
+// TODO: std::unique_ptr<Object>
 void Scene::draw(sf::RenderWindow& window) {
     for (const std::unique_ptr<DynamicObject>& object : _objects) {
         object->draw(window);
