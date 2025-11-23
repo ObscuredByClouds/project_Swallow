@@ -11,16 +11,21 @@
 
 class Controller {
 
+private:
+
+    std::unique_ptr<DynamicObject> _controlled_object;
+
 public:
+
     virtual ~Controller() = default;
 
-    virtual void update(DynamicObject& object, float time) = 0;
+    virtual void update(float time) = 0;
 };
     
 class ZeroController : public Controller {
 
 public:
-    void update(DynamicObject& object, float time) override;
+    void update(float time) override;
 
 };
 

@@ -38,7 +38,7 @@ private:
 public:
     RandomRombTankController();
 
-    void update(DynamicObject& object, float time) override;
+    void update(float time) override;
 };
 
 
@@ -50,12 +50,12 @@ private:
 
 private:
 
-    void updateRotation(DynamicObject& object, float time);
-    void updatePosition(DynamicObject& object, float time);
+    void updateRotation(float time);
+    void updatePosition(float time);
 
 public:
 
     InputRombTankController(sf::RenderWindow& window);
-    void update(DynamicObject& object, float time) override;
+    void update(float time) override;
 
 };

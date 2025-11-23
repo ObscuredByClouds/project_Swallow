@@ -31,7 +31,7 @@ RandomRombTankController::RandomRombTankController() {
     _moving_flag = false;
 }
 
-void RandomRombTankController::update(DynamicObject& object, float time) {
+void RandomRombTankController::update(float time) {
     RombTank& tank = dynamic_cast<RombTank&>(object); // cast to use tank-specific attributes 
 
     _random_behavior_elapsed_time += time;

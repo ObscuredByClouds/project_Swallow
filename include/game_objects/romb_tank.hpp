@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game_objects_common.hpp"
+#include "healthbar.hpp"
 
 class RombTank : public DynamicObject {
 
@@ -18,9 +19,9 @@ class RombTank : public DynamicObject {
     
     public:
     
-        RombTank(std::unique_ptr<Controller> controller, sf::Vector2f position);
-        RombTank(std::unique_ptr<Controller> controller, sf::Vector2f position, float angle);
-        RombTank(std::unique_ptr<Controller> controller, sf::Vector2f position, float angle, int team);
+        RombTank(sf::Vector2f position);
+        RombTank(sf::Vector2f position, float angle);
+        RombTank(sf::Vector2f position, float angle, int team);
         
         float get_speed() const override;
     

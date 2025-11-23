@@ -6,7 +6,6 @@ class DynamicObject : public Object {
 
     protected:
 
-        std::unique_ptr<Controller> _controller;
         sf::Vector2f _position;
         float _angle;
         sf::Sprite _sprite;
@@ -14,7 +13,7 @@ class DynamicObject : public Object {
 
     public:
 
-        DynamicObject(std::unique_ptr<Controller> controller, const sf::Vector2f &position, const float &angle);
+        DynamicObject(const sf::Vector2f &position, const float &angle);
         virtual ~DynamicObject();
 
         // position
@@ -37,9 +36,6 @@ class DynamicObject : public Object {
         // spawn/despawn management
         bool get_terminate() const;
         void set_terminate();
-
-        // scene utilities
-        void update(float time);
 
         // pure virtual functions for convinience
         virtual float get_speed() const = 0;

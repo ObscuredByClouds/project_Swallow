@@ -13,7 +13,7 @@ class Shell : public DynamicObject {
     
     public:
     
-        Shell(std::unique_ptr<Controller> controller, sf::Vector2f position, float angle, float speed, float damage, float lifetime, int team);
+        Shell(sf::Vector2f position, float angle, float speed, float damage, float lifetime, int team);
         ~Shell();
     
         float get_speed() const override;

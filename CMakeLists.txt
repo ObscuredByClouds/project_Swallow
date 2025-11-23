@@ -14,8 +14,16 @@ find_package(SFML ${SFML_VERSION} REQUIRED COMPONENTS graphics window system REQ
 
 # doctest
 find_package(doctest REQUIRED)
+if(NOT doctest_FOUND)
+    message(FATAL_ERROR "doctest not found")
+endif()
 
 include_directories(include)
+include_directories(include/scene)
+include_directories(include/utilities)
+include_directories(include/game_objects)
+include_directories(include/controllers)
+include_directories(include/abstract_objects)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE HEADERS "include/*.hpp")

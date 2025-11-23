@@ -1,10 +1,9 @@
 #include "dynamic_object.hpp"
 
 DynamicObject::DynamicObject(
-    std::unique_ptr<Controller> controller,
     const sf::Vector2f &position,
     const float &angle
-) : _controller(std::move(controller)), _position(position), _angle(angle) {}
+) : _position(position), _angle(angle) {}
 
 DynamicObject::~DynamicObject() {}
 
@@ -31,8 +30,8 @@ bool DynamicObject::get_terminate() const {return _terminate;};
 void DynamicObject::set_terminate() {_terminate = true;};
 
 // common function for all dynamic objects
-void DynamicObject::update(float time) {
+/* void DynamicObject::update(float time) {
     if (_controller) {
         _controller->update(*this, time);
     }
-}
+} */

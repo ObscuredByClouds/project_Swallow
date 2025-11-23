@@ -14,6 +14,6 @@ public:
 
     virtual ~ShellController() = default;
 
-    void update(DynamicObject& object, float time) override;
+    void update(float time) override;
 };
     

@@ -1,14 +1,13 @@
 #include "game_objects/shell.hpp"
 
 Shell::Shell(
-    std::unique_ptr<Controller> controller,
     sf::Vector2f position,
     float angle,
     float speed,
     float damage,
     float lifetime,
     int team
-) : DynamicObject(std::move(controller), position, angle) {
+) : DynamicObject(position, angle) {
     int sprite_pixel_length = 15;
     _speed = speed;
     _damage = damage;
